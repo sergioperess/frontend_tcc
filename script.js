@@ -38,6 +38,14 @@ function limpar(){
     ImodeloCelular.value = "";
 }
 
+function newTransaction(){
+    window.location.href = "pages/transaction/transaction.html";
+}
+
+function register(){
+    window.location.href = "pages/cadastro.html";
+}
+
 cadastro.addEventListener('submit', function(event){
     event.preventDefault();
 
