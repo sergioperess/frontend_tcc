@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CRUD de Usuários</title>
+    </head>
+    <body>
+        <div id="conteudo"></div>
+        <table id="tableClient" class="records">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Sobrenome</th>
+                    <th>Senha</th>
+                    <th>E-mail</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <div class="modal" id="modal">
+                <div class="modal-content">
+                    <header class="modal-header">
+                        <h2>Novo Cliente</h2>
+                        <span class="modal-close" id="modalClose">&#10006;</span>
+                    </header>
+                    <form id="form" class="modal-form">
+                        <input type="text" class="modal-field" name="firstName" placeholder="Nome">
+                        <input type="text" class="modal-field" name="lastName" placeholder="Sobrenome">
+                        <input type="text" class="modal-field" name="cpf" placeholder="CPF">
+                        <input type="password" class="modal-field" name="senha" placeholder="Senha">
+                        <input type="text" class="modal-field" name="email" placeholder="Email">
+                    </form>
+                    <footer class="modal-footer">
+                        <button id="salvar" class="button green">Salvar</button>
+                        <button id="cancelar" class="button blue">Cancelar</button>
+                    </footer>
+                </div>
+            </div>
+        <script src="script2.js"></script>
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/button.css">
+        <link rel="stylesheet" href="css/records.css">
+        <link rel="stylesheet" href="css/modal.css">
+    </body>
+</html>

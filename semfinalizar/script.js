@@ -4,7 +4,7 @@ const IlastName = document.querySelector(".lastName");
 const Icpf = document.querySelector(".cpf");
 const Isenha = document.querySelector(".senha");
 const Iemail = document.querySelector(".email");
-const ImodeloCelular = document.querySelector(".modeloCelular");
+
 
 function cadastrar(){
     fetch("http://localhost:8080/users",
@@ -19,8 +19,7 @@ function cadastrar(){
                 lastName: IlastName.value,
                 cpf: Icpf.value,
                 senha: Isenha.value,
-                email: Iemail.value,
-                modeloCelular: ImodeloCelular.value
+                email: Iemail.value
             })            
         }
     )
@@ -35,7 +34,6 @@ function limpar(){
     Icpf.value = "";
     Isenha.value = "";
     Iemail.value = "";
-    ImodeloCelular.value = "";
 }
 
 function newTransaction(){
@@ -47,6 +45,7 @@ function register(){
 }
 
 cadastro.addEventListener('submit', function(event){
+    // Previne que a pagina seja atualizada
     event.preventDefault();
 
     cadastrar();
