@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function fetchItems() {
         fetch(apiUrl,{
                 headers: { 
-                'Authorization': `Bearer ${data.token}`
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                 }
             })
             .then(response => response.json())

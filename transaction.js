@@ -4,13 +4,13 @@ document.addEventListener("DOMContentLoaded", function() {
     // Função para criar um novo item
     document.getElementById("createForm").addEventListener("submit", function(e) {
         e.preventDefault();
-        const transaction = document.querySelector(".transaction");
+        const valor = document.querySelector(".valor");
         const type = document.querySelector(".type");
         const description = document.querySelector(".description");
         const userId = document.querySelector(".userId");
     
         const data = { 
-            transaction: transaction.value, 
+            valor: valor.value, 
             type: type.value,
             description: description.value,
             userId: userId.value
