@@ -18,13 +18,16 @@ document.addEventListener("DOMContentLoaded", function() {
             email: email.value
         };
 
-        fetch(apiUrl, {
+        fetch(`http://localhost:8080/auth/register`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json' 
+            },
             body: JSON.stringify(data)
         })
         .then(response => response.json())
         .then(data => {
+            console.log(`${data.token}`)
             console.log("Item criado:", data);
             fetchItems();
         })
@@ -33,7 +36,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Função para ler e listar todos os itens
     function fetchItems() {
-        fetch(apiUrl)
+        fetch(apiUrl,{
+                headers: { 
+                'Authorization': `Bearer ${data.token}`
+                }
+            })
             .then(response => response.json())
             .then(data => {
                 const itemList = document.getElementById("itemList");
@@ -49,7 +56,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     itemList.appendChild(li);
                 });
             })
-            .catch(error => console.error("Erro ao carregar itens:", error));
+            .catch(error => console.error("Erro ao carregar itens:", error),
+            console.log(localStorage.getItem("token")));
     }
 
     // Função para atualizar um item
@@ -66,7 +74,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         fetch(`${apiUrl}?userId=${id}`, {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'Content-Type': 'application/json' 
+            },
             body: JSON.stringify(data)
         })
         .then(response => response.json())
@@ -83,7 +94,10 @@ document.addEventListener("DOMContentLoaded", function() {
         const id = document.getElementById("deleteId").value;
 
         fetch(`${apiUrl}/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: { 
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
         })
         .then(response => {
             if (response.ok) {
