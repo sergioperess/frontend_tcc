@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function fetchItems() {
         fetch(apiUrl,{
                 headers: { 
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                 }
             })
             .then(response => response.json())
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             })
             .catch(error => console.error("Erro ao carregar itens:", error),
-            console.log(localStorage.getItem("token")));
+            console.log(localStorage.getItem("authToken")));
     }
 
     // Função para atualizar um item

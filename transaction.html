@@ -4,37 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD de Transações</title>
+    <link rel="stylesheet" href="transaction.css">
 </head>
 <body>
-    <h1>CRUD de Transações</h1>
 
-    <h2>Criar Novo Item</h2>
-    <form id="createForm">
-        <input type="number" class="valor" name="valor" placeholder="Valor">
-        <input type="text" class="type" name="type" placeholder="Tipo de gasto">
-        <input type="text" class="description" name="description" placeholder="Descrição">
-        <input type="number" min="0" class="userId" name="userId" placeholder="Id do Usuário">
-        <button type="submit">Criar</button>
-    </form>
+    <header>
+        <h1>Página de Transação</h1>
+    </header>
+    <main>
+        <section class="actions">
+            <button id="create-item">Criar Novo Item</button>
+        </section>
 
-    <h2>Lista de Itens</h2>
-    <ul id="itemList"></ul>
+        <section class="item-management">
 
-    <h2>Atualizar Item</h2>
-    <form id="updateForm">
-        <input type="number" min="0" id="id" placeholder="ID do Item">
-        <input type="number" class="transaction" id="transaction" placeholder="Valor">
-        <input type="text" class="type" id="type" placeholder="Tipo de Gasto">
-        <input type="text" class="description" id="description" placeholder="Descrição">
-        <button type="submit">Atualizar</button>
-    </form>
+            <h2>Criar Novo Item</h2>
+            <form id="createForm">
+                <input type="text" class="valor" name="valor" placeholder="Valor">
+                <input type="text" class="type" name="type" placeholder="Tipo de gasto">
+                <input type="text" class="description" name="description" placeholder="Descrição">
+                <button type="submit">Criar</button>
+            </form>
 
-    <h2>Deletar Item</h2>
-    <form id="deleteForm">
-        <input type="number" min="0" id="deleteId" placeholder="ID do Item">
-        <button type="submit">Deletar</button>
-    </form>
+            <h2>Lista de Itens</h2>
+            <ul id="itemList"></ul>
 
+            <h2>Atualizar Item</h2>
+            <form id="updateForm">
+                <input type="text" class="valor" id="valor" placeholder="Valor">
+                <input type="text" class="type" id="type" placeholder="Tipo de Gasto">
+                <input type="text" class="description" id="description" placeholder="Descrição">
+                <button type="submit">Atualizar</button>
+            </form>
+
+            <h2>Deletar Item</h2>
+            <form id="deleteForm">
+                <button type="submit" id="delete-item ">Deletar</button>
+            </form>
+
+            <div id="logout">
+                <button type="submit">Sair</button>
+            </div>
+
+        </section>
+    </main>
     <script src="transaction.js"></script>
 </body>
 </html>

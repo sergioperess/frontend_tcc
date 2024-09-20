@@ -24,6 +24,8 @@ document.getElementById("createForm").addEventListener("submit", function(e) {
     .then(response => response.json())
     .then(data => {
         console.log("Item criado:", data);
+        localStorage.setItem('userId', data.id);
+        setTimeout(window.location.href = './transaction.html', 2500);
     })
     .catch(error => console.error("Erro ao criar item:", error));
 });

@@ -1,33 +1,53 @@
-document.getElementById('loginForm').addEventListener('submit', function(event) {
+document.getElementById('loginForm').addEventListener('submit', async function(event) {
     const apiUrl = "http://localhost:8080/auth";
-
+    
     event.preventDefault(); // Impede o envio padrão do formulário
 
-    // Coleta os dados do formulário
+    // Obtém os valores dos campos
     const senha = document.querySelector(".senha");
     const email = document.querySelector(".email");
+    const messageElement = document.getElementById("message");
 
-    const data = { 
-        senha: senha.value,
-        email: email.value
+    // Dados de login do usuário
+    const loginData = {
+        email: email.value,
+        senha: senha.value
     };
 
+    // Função para fazer login e obter o token
+    async function login() {
+        try {
+            const response = await fetch(`${apiUrl}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(loginData)
+            });
 
-    // Faz a requisição usando fetch
-    fetch(`${apiUrl}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json()) // Converte a resposta para JSON
-    .then(data => {
-        if (data.title == "NOT_FOUND! Consult the documentation" || data.message == "Senha incorreta") {
-            console.log("Falha no login!", data); 
-        } else {
-            console.log("Login realizado com sucesso", data)
-            console.log(`${data.token}`)
-            return `${data.token}`
+            if (!response.ok) {
+                messageElement.textContent = "E-mail ou senha incorretos.";
+                messageElement.style.color = "red";
+                throw new Error('Falha no login');                
+            }
+
+            const data = await response.json();
+            const token = data.token; 
+            const userId = data.id;
+
+            // Armazene o token no localStorage (ou sessionStorage)
+            localStorage.setItem('authToken', token);
+            localStorage.setItem('userId', userId);           
+
+            console.log('Login bem-sucedido! Token armazenado.', data);
+
+            setTimeout(window.location.href = './transaction.html', 2500);
+        } catch (error) {
+            console.error('Erro ao fazer login:', error);
         }
-    })
-    .catch(error => console.error("Erro ao logar:", error))
+    }
+
+    // Chame a função para fazer o login
+    login();
+
 });

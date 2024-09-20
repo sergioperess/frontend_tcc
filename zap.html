@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Transação</title>
+    <link rel="stylesheet" href="csspronto.css">
+</head>
+<body>
+    <header>
+        <h1>Página de Transação</h1>
+    </header>
+    <main>
+        <section class="actions">
+            <button id="create-item">Criar Novo Item</button>
+            <button id="list-items">Listar Itens</button>
+        </section>
+        <section class="item-management">
+            <h2>Gerenciar Item</h2>
+            <form id="item-form">
+                <label for="item-id">ID do Item:</label>
+                <input type="text" id="item-id" name="item-id">
+                
+                <label for="item-name">Nome do Item:</label>
+                <input type="text" id="item-name" name="item-name">
+                
+                <label for="item-description">Descrição:</label>
+                <textarea id="item-description" name="item-description"></textarea>
+                
+                <button type="submit">Atualizar Item</button>
+                <button type="button" id="delete-item">Deletar Item</button>
+            </form>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
