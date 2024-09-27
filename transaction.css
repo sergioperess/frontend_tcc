@@ -1,156 +1,233 @@
-/* Reset básico para garantir consistência entre navegadores */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Estilo para o corpo da página */
+/* Definições globais */
 body {
     font-family: Arial, sans-serif;
-    line-height: 1.6;
+    margin: 0;
+    padding: 0;
     background-color: #f4f4f4;
-    color: #333;
 }
 
-/* Estilo para o cabeçalho */
 header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
     text-align: center;
 }
 
-header h1 {
+h1 {
     margin: 0;
 }
 
-/* Estilo principal da página */
 main {
-    padding: 1rem;
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    padding: 20px;
 }
 
-/* Estilo para a seção de ações */
+/* Seção de ações */
 .actions {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+    justify-content: flex-end;
+    margin-bottom: 20px;
 }
 
 .actions button {
-    background-color: #007bff;
-    color: #fff;
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 18px;
     border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+    border-radius: 5px;
     cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+    font-size: 1rem;
 }
 
 .actions button:hover {
-    background-color: #0056b3;
+    background-color: #45a049;
 }
 
-/* Estilo para o gerenciamento de itens */
-.item-management {
-    margin-top: 1rem;
+/* Estilização de formulários e inputs */
+form {
+    margin-bottom: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.item-management h2 {
-    margin-bottom: 1rem;
+form input {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
 }
 
-#item-management {
+form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+/* Estilos gerais para os rótulos e selects */
+label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-right: 10px;
+}
+
+select {
+    padding: 8px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+/* Efeito ao focar no select */
+select:focus {
+    border-color: #007bff;
+    background-color: #fff;
+}
+
+/* Adiciona espaçamento entre os selects */
+select + select {
+    margin-left: 20px;
+}
+
+/* Lista de itens */
+#itemList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#itemList li div {
+    margin-bottom: 5px; /* Adiciona espaçamento entre as linhas */
+}
+
+#itemList li {
+    background-color: #fff;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 12px;
     display: flex;
-    flex-direction: column;
+    align-items: flex-start; /* Alinhamento flexível na vertical */
+    justify-content: flex-start;
+    font-size: 13px; /* Tamanho da fonte dos itens da lista */
+    color: #333; /* Cor do texto */
+    flex-direction: row; /* Mantém o checkbox ao lado */
 }
 
-#createForm input,
-#createForm textarea {
-    width: 85vw;
-    display: flex; 
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+/* Estilo para o checkbox */
+#itemList input[type="checkbox"] {
+    margin-right: 15px; /* Espaçamento entre o checkbox e o texto */
 }
 
-#createForm button {
-    background-color: #28a745;
-    color: #fff;
+/* Efeito ao passar o mouse sobre o item da lista */
+#itemList li:hover {
+    background-color: #e9e9e9;
+    border-color: #ccc;
+}
+
+#itemList li button {
+    background-color: #f44336;
+    color: white;
     border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+    padding: 6px 12px;
     cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-    margin-right: 0.5rem;
+    border-radius: 3px;
+    font-size: 0.9rem;
 }
 
-#updateForm input,
-#updateForm textarea {
-    width: 85vw;
-    display: flex; 
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+#itemList li button:hover {
+    background-color: #e53935;
 }
 
-#updateForm button {
-    background-color: #28a745;
-    color: #fff;
+/* Estilização do botão de sair */
+#logout button {
+    background-color: #f44336;
+    color: white;
+    padding: 12px 18px;
     border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+    border-radius: 5px;
     cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-    margin-right: 0.5rem;
-}
-
-#deleteForm button{
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
     font-size: 1rem;
+}
+
+#logout button:hover {
+    background-color: #e53935;
+}
+
+/* Estilos para o modal */
+.modal {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    z-index: 1; /* Garante que ficará acima de todo o conteúdo */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo transparente escuro */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto; /* Alinha verticalmente */
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%; /* Largura do modal */
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
     cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-    margin-right: 0.5rem;
-    background-color: #dc3545;
-}
-
-#logout button{
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-    margin-right: 0.5rem;
-    background-color: #218838;
 }
 
 
+/* Layout responsivo */
+@media (max-width: 768px) {
+    form input {
+        width: 100%;
+    }
 
-#item-form button:hover {
-    background-color: #218838;
-}
+    .actions {
+        justify-content: center;
+    }
 
-#item-form button#delete-item:hover {
-    background-color: #c82333;
+    .actions button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    #itemList li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #itemList li button {
+        width: 100%;
+        margin-top: 10px;
+    }
 }

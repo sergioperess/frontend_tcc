@@ -25,7 +25,20 @@ document.getElementById("createForm").addEventListener("submit", function(e) {
     .then(data => {
         console.log("Item criado:", data);
         localStorage.setItem('userId', data.id);
+        criarCookie('authToken', data.token, 7);
         setTimeout(window.location.href = './transaction.html', 2500);
     })
     .catch(error => console.error("Erro ao criar item:", error));
+
+    // Função para criar o cookie
+    function criarCookie(nome, valor, diasExpiracao) {
+        let dataExpiracao = "";
+        if (diasExpiracao) {
+            let data = new Date();
+            data.setTime(data.getTime() + (diasExpiracao * 24 * 60 * 60 * 1000));
+            dataExpiracao = "; expires=" + data.toUTCString();
+        }
+        // Adicionando SameSite=Lax para compatibilidade com Chrome
+        document.cookie = nome + "=" + valor + dataExpiracao + "; path=/; SameSite=Lax";
+    }
 });
