@@ -24,14 +24,17 @@
                     <h2>Criar Novo Item</h2>
                     <form id="createForm">
                         <input type="text" class="valor" name="valor" placeholder="Valor">
-                        <input type="text" class="type" name="type" placeholder="Tipo de gasto">
+                        <label for="typeId">Tipo de Gasto:</label>
+                        <select class="type" name="type" id="typeId">
+                            <option value="" disabled selected>Selecione o tipo de gasto</option>
+                        </select>
                         <input type="text" class="description" name="description" placeholder="Descrição">
                         <button type="submit">Criar</button>
                     </form>
                 </div>
             </div>
             
-            <h2>Lista de Itens</h2>
+            <h2>Tabela de Itens</h2>
 
             <label for="filterType">Filtrar por Tipo de Gasto:</label>
             <select id="filterType">
@@ -55,12 +58,34 @@
                 <option value="dezembro">Dezembro</option>
             </select>
 
-            <ul id="itemList"></ul>
+            <div class="button-container">
+                <button id="selectAll">Selecionar Todos</button>
+                <button id="deselectAll">Remover Seleção</button>
+            </div>
+
+            <table id="itemTable">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Id</th>
+                        <th>Valor</th>
+                        <th>Data</th>
+                        <th>Tipo de Gasto</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
 
             <h2>Atualizar Item</h2>
             <form id="updateForm">
                 <input type="text" class="valor" id="valor" placeholder="Valor">
-                <input type="text" class="type" id="type" placeholder="Tipo de Gasto">
+                <label for="updateTypeId">Tipo de Gasto:</label>
+                <select class="type" name="type" id="updateTypeId">
+                    <option value="" disabled selected>Selecione o tipo de gasto</option>
+                </select>
                 <input type="text" class="description" id="description" placeholder="Descrição">
                 <button type="submit">Atualizar</button>
             </form>

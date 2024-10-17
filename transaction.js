@@ -24,27 +24,35 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const apiUrl = "http://localhost:8080/api/transaction";
 
+    loadGastoOptions();
+    loadGastoOptions1();
+
     var arrayId = [];
     // Array de todos os itens de gastos (fetched)
     let allItems = [];
 
-    let gastoId;
-
     // Função para criar um novo item
     document.getElementById("createForm").addEventListener("submit", function(e) {
         e.preventDefault();
+
         const valor = document.querySelector(".valor");
         const type = document.querySelector(".type");
         const description = document.querySelector(".description");
-
-        findType(type.value);
+    
+        // Validação para garantir que o tipo de gasto foi selecionado
+        if (!type) {
+            alert("Por favor, selecione um tipo de gasto.");
+            return;
+        }
 
         const data = { 
             valor: replaceDot(valor.value), 
-            typeId: gastoId,
+            typeId: type.value,
             description: description.value,
             userId: localStorage.getItem('userId')
         };
+
+        
 
         fetch(apiUrl, {
             method: 'POST',
@@ -65,34 +73,6 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.style.display = "none";
     });
 
-
-    // Função para procurar o id do Tipo de Gasto
-    async function findType(index){
-
-        const aux = index.charAt(0).toUpperCase() + index.slice(1).toLowerCase();
-        console.log(aux);
-
-        try {
-            const response = await fetch(`http://localhost:8080/api/gastos/${aux}/${localStorage.getItem('userId')}`,{
-                headers: { 
-                    'Authorization': `Bearer ${lerCookie('authToken')}`
-                }
-            })
-
-            if (!response.ok) {
-                createType(aux);               
-            }
-
-            const data = await response.json();
-
-            gastoId = data.id;
-
-            console.log(gastoId);
-                
-        } catch (error) {
-            console.error('Erro ao carregar itens:"', error);
-        }            
-    }
 
     // Função para criar o cookie
     function criarCookie(nome, valor, diasExpiracao) {
@@ -123,30 +103,6 @@ document.addEventListener("DOMContentLoaded", function() {
     function excluirCookie(nome) {
         criarCookie(nome, "", -1);
     }
-
-    function createType(index){
-
-        const dado = { 
-            nome: index,
-            userId: localStorage.getItem('userId')
-        };
-        
-        fetch(`http://localhost:8080/api/gastos`, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${lerCookie('authToken')}`
-            },
-            body: JSON.stringify(dado)
-        })
-        .then(response => response.json())
-        .then(item => {
-            gastoId = item.id;
-
-            console.log("Item criado:", item);
-        })
-        .catch(error => console.error("Erro ao criar item:", error));  
-    }
     
 
     // Função para ler e listar todos os itens
@@ -162,58 +118,109 @@ document.addEventListener("DOMContentLoaded", function() {
             renderItems(allItems); // Renderiza todos os itens inicialmente
         })
         .catch(error => console.error("Erro ao carregar itens:", error));
+    }
 
-        /*fetch(`${apiUrl}/list/${localStorage.getItem('userId')}`,{
-            headers: { 
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    // Função para carregar as opções no select
+    function loadGastoOptions1() { 
+        const select = document.querySelector("#updateTypeId");   
+
+        fetch(`http://localhost:8080/api/gastos/list/${localStorage.getItem('userId')}`, {
+            headers: {
+                'Authorization': `Bearer ${lerCookie('authToken')}`
             }
         })
-            .then(response => response.json())
-            .then(data => {
-                const itemList = document.getElementById("itemList");
-                itemList.innerHTML = "";
-                data.forEach(item => {
-                    const li = document.createElement("li");
-                    const checkbox = document.createElement("input");
-                    checkbox.type = 'checkbox';
-                    li.textContent = `
-                        ID: ${item.id}, 
-                        Valor: ${updateValor(item.valor)}, 
-                        Data: ${updateDateTime(item.date)},
-                        Tipo de Gasto: ${item.type},
-                        Descrição: ${item.description}`;
-                    itemList.appendChild(checkbox);    
-                    itemList.appendChild(li);
+        .then(response => {
+            // Verifica se a resposta foi bem-sucedida
+            if (!response.ok) {
+                throw new Error("Erro ao carregar os tipos de gastos");
+            }
+            return response.json();  // Converte a resposta em JSON
+        })
+        .then(data => {
+            // Limpa o select antes de adicionar os novos valores
+            select.innerHTML = "";
 
-                    // Adiciona um evento de mudança (change) para o checkbox
-                    checkbox.addEventListener('change', function() {
-                        if (this.checked) {
-                            addInArray(item.id);
-                        }else{
-                            removeInArray(item.id);
-                        }
-                        console.log(arrayId);
-                    });
-                });
-            })
-            .catch(error => console.error("Erro ao carregar itens:", error));*/
+            // Adiciona uma opção padrão
+            const defaultOption = document.createElement("option");
+            defaultOption.value = ""; // Valor vazio
+            defaultOption.textContent = "Selecione o tipo de gasto"; // Texto padrão
+            select.appendChild(defaultOption);            
+
+            // Ordena os dados em ordem alfabética com base no nome
+            data.sort((a, b) => a.nome.localeCompare(b.nome));
+
+            // Itera sobre os dados recebidos e cria <option> para cada um
+            data.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.id; // O ID do tipo de gasto como valor da opção
+                option.textContent = item.nome; // Nome do tipo de gasto como texto da opção
+                select.appendChild(option); // Adiciona a opção ao select
+            });
+        })
+        .catch(error => {
+            console.error("Erro ao carregar as opções:", error);
+            // Exibe uma mensagem de erro no select caso a requisição falhe
+            select.innerHTML = "<option value=''>Erro ao carregar opções</option>";
+        });
+    }
+
+    // Função para carregar as opções no select
+    function loadGastoOptions() {
+        const select = document.querySelector("#typeId");      
+
+        fetch(`http://localhost:8080/api/gastos/list/${localStorage.getItem('userId')}`, {
+            headers: {
+                'Authorization': `Bearer ${lerCookie('authToken')}`
+            }
+        })
+        .then(response => {
+            // Verifica se a resposta foi bem-sucedida
+            if (!response.ok) {
+                throw new Error("Erro ao carregar os tipos de gastos");
+            }
+            return response.json();  // Converte a resposta em JSON
+        })
+        .then(data => {
+            // Limpa o select antes de adicionar os novos valores
+            select.innerHTML = "";
+
+            // Adiciona uma opção padrão
+            const defaultOption = document.createElement("option");
+            defaultOption.value = ""; // Valor vazio
+            defaultOption.textContent = "Selecione o tipo de gasto"; // Texto padrão
+            select.appendChild(defaultOption);
+            
+            // Ordena os dados em ordem alfabética com base no nome
+            data.sort((a, b) => a.nome.localeCompare(b.nome));
+
+            // Itera sobre os dados recebidos e cria <option> para cada um
+            data.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.id; // O ID do tipo de gasto como valor da opção
+                option.textContent = item.nome; // Nome do tipo de gasto como texto da opção
+                select.appendChild(option); // Adiciona a opção ao select
+            });
+        })
+        .catch(error => {
+            console.error("Erro ao carregar as opções:", error);
+            // Exibe uma mensagem de erro no select caso a requisição falhe
+            select.innerHTML = "<option value=''>Erro ao carregar opções</option>";
+        });
     }
 
     // Função para carregar os dados e preencher o select
     function carregarOpcoes() {
         const select = document.getElementById("filterType");
 
-        // Fazer a requisição para a API (Exemplo de URL fictícia)
         fetch(`http://localhost:8080/api/gastos/list/${localStorage.getItem('userId')}`, {
             headers: {
-                'Authorization': `Bearer ${lerCookie('authToken')}` // Exemplo de autenticação
+                'Authorization': `Bearer ${lerCookie('authToken')}` 
             }
         })
         .then(response => response.json())  // Converte a resposta em JSON
         .then(data => {
             // Limpa o select antes de adicionar os novos valores
             select.innerHTML = "";
-
            
             // Adiciona uma opção padrão
             const defaultOption = document.createElement("option");
@@ -279,33 +286,52 @@ document.addEventListener("DOMContentLoaded", function() {
     // Chama a função para carregar as opções quando a página carregar
     window.onload = carregarOpcoes;
 
-    // Função para renderizar itens na lista com base nos dados fornecidos
+    // Função para renderizar itens na tabela com base nos dados fornecidos
     function renderItems(items) {
-        const itemList = document.getElementById("itemList");
-        itemList.innerHTML = ""; // Limpa a lista de itens antes de atualizar
+        const itemTable = document.getElementById("itemTable"); // Seleciona a tabela
+        const tbody = itemTable.querySelector("tbody"); // Seleciona o corpo da tabela
+        tbody.innerHTML = ""; // Limpa o corpo da tabela antes de atualizar
 
         items.forEach(item => {
-            // Criação do elemento <li>
-            const li = document.createElement("li");
+            // Criação da linha da tabela <tr>
+            const row = document.createElement("tr");
 
-            // Criação do checkbox
+            // Criação da célula com checkbox
+            const checkboxCell = document.createElement("td");
             const checkbox = document.createElement("input");
             checkbox.type = 'checkbox';
 
-            // Criação do texto do item
-            const texto = document.createTextNode(`
-                ID: ${item.id}, 
-                Valor: ${updateValor(item.valor)}, 
-                Data: ${updateDateTime(item.date)},
-                Tipo de Gasto: ${item.type},
-                Descrição: ${item.description}`);
+            // Adiciona o checkbox à célula
+            checkboxCell.appendChild(checkbox);
+            row.appendChild(checkboxCell);
 
-            // Adiciona o checkbox e o texto ao <li>
-            li.appendChild(checkbox);
-            li.appendChild(texto);
+            // Criação da célula de ID
+            const idCell = document.createElement("td");
+            idCell.textContent = item.id;
+            row.appendChild(idCell);
 
-            // Adiciona o <li> à lista
-            itemList.appendChild(li);
+            // Criação da célula de Valor
+            const valorCell = document.createElement("td");
+            valorCell.textContent = updateValor(item.valor);
+            row.appendChild(valorCell);
+
+            // Criação da célula de Data
+            const dataCell = document.createElement("td");
+            dataCell.textContent = updateDateTime(item.date);
+            row.appendChild(dataCell);
+
+            // Criação da célula de Tipo de Gasto
+            const tipoGastoCell = document.createElement("td");
+            tipoGastoCell.textContent = item.type;
+            row.appendChild(tipoGastoCell);
+
+            // Criação da célula de Descrição
+            const descricaoCell = document.createElement("td");
+            descricaoCell.textContent = item.description;
+            row.appendChild(descricaoCell);
+
+            // Adiciona a linha ao corpo da tabela
+            tbody.appendChild(row);
 
             // Evento de mudança para o checkbox
             checkbox.addEventListener('change', function() {
@@ -316,9 +342,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
                 console.log(arrayId); // Exibe o array atualizado no console
             });
+
+            // Adiciona evento de clique à linha, sem alterar o array
+            row.addEventListener('click', function() {
+                // Verifica se o clique foi diretamente no checkbox para evitar duplicação de eventos
+                if (event.target !== checkbox) {
+                    checkbox.checked = !checkbox.checked; // Alterna o estado do checkbox
+                    checkbox.dispatchEvent(new Event('change')); // Dispara o evento 'change' do checkbox
+                }
+            });
         });
     }
-
 
     // Função para trocar a vírgula pelo ponto
     function replaceDot(valor){
@@ -359,21 +393,49 @@ document.addEventListener("DOMContentLoaded", function() {
         return valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
     }
 
+    // Função para selecionar todos os checkboxes
+    document.getElementById("selectAll").addEventListener("click", function() {
+        arrayId.length = 0;
+        const checkboxes = document.querySelectorAll("#itemTable tbody input[type='checkbox']");
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true; // Marca todos os checkboxes
+            const itemId = parseInt(checkbox.closest("tr").querySelector("td:nth-child(2)").textContent); // Obtém o ID do item
+            addInArray(itemId); // Adiciona o ID ao array
+        });
+    });
+
+    // Função para remover a seleção de todos os checkboxes
+    document.getElementById("deselectAll").addEventListener("click", function() {
+        const checkboxes = document.querySelectorAll("#itemTable tbody input[type='checkbox']");
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false; // Desmarca todos os checkboxes
+            const itemId = parseInt(checkbox.closest("tr").querySelector("td:nth-child(2)").textContent); // Obtém o ID do item
+            removeInArray(itemId); // Remove o ID do array
+        });
+        arrayId.length = 0;
+    });
+
     // Função para atualizar um item
     document.getElementById("updateForm").addEventListener("submit", function(e) {
         e.preventDefault();
 
         const valor = document.getElementById("valor").value;
-        const type = document.getElementById("type").value;
+        const type = document.getElementById("updateTypeId").value;
         const description = document.getElementById("description").value;
 
-        findType(type);
+        // Validação para garantir que o tipo de gasto foi selecionado
+        if (!type) {
+            alert("Por favor, selecione um tipo de gasto.");
+            return;
+        }
 
         const data = { 
             valor: replaceDot(valor), 
-            typeId: gastoId,
+            typeId: type,
             description: description
         };
+
+        console.log(data)
 
         if(arrayId.length === 1){
 

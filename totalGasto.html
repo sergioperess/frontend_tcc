@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total de Gastos</title>
+    <link rel="stylesheet" href="transaction.css">
+</head>
+<body>
+
+    <header>
+        <h1>Total Gasto</h1>
+    </header>
+    <main>
+
+        <section class="item-management">
+            
+            <h2>Tabela de Itens</h2>
+
+            <label for="filterMonth">Filtrar por Mês:</label>
+            <select id="filterMonth">
+                <option value="">Todos</option>
+                <option value="janeiro">Janeiro</option>
+                <option value="fevereiro">Fevereiro</option>
+                <option value="março">Março</option>
+                <option value="abril">Abril</option>
+                <option value="maio">Maio</option>
+                <option value="junho">Junho</option>
+                <option value="julho">Julho</option>
+                <option value="agosto">Agosto</option>
+                <option value="setembro">Setembro</option>
+                <option value="outubro">Outubro</option>
+                <option value="novembro">Novembro</option>
+                <option value="dezembro">Dezembro</option>
+            </select>
+
+            <label for="filterYear">Filtrar por Ano:</label>
+            <select id="filterYear">
+    
+            </select>
+
+            <table id="itemTable">
+                <thead>
+                    <tr>
+                        <th>Tipo de Gasto</th>
+                        <th>Total</th>
+                        <th>Planejamento</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+            <div id="logout">
+                <button type="submit">Sair</button>
+            </div>
+
+        </section>
+    </main>
+    <script src="totalGasto.js"></script>
+</body>
+</html>

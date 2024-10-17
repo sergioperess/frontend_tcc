@@ -75,88 +75,6 @@ form button:hover {
     background-color: #45a049;
 }
 
-.button-container {
-    margin-bottom: 20px; /* Espaço entre os botões e a tabela */
-}
-
-.button-container button {
-    background-color: #4CAF50; /* Cor de fundo do botão */
-    color: white; /* Cor do texto do botão */
-    padding: 10px 15px; /* Espaçamento interno */
-    border: none; /* Sem borda */
-    border-radius: 5px; /* Cantos arredondados */
-    cursor: pointer; /* Cursor de ponteiro ao passar o mouse */
-    margin-right: 10px; /* Espaçamento entre os botões */
-}
-
-.button-container button:hover {
-    background-color: #45a049; /* Cor de fundo ao passar o mouse */
-}
-
-/* Estilização da tabela de itens */
-#itemTable {
-    width: 80%; /* Define a largura da tabela */
-    margin: 0 auto; /* Centraliza a tabela na página */
-    border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
-    margin-bottom: 20px;
-}
-
-/* Estilização das células da tabela */
-#itemTable th, 
-#itemTable td {
-    padding: 12px; /* Espaçamento interno das células */
-    border: 1px solid #ddd; /* Borda das células */
-    text-align: center; /* Centraliza o conteúdo das células */
-    vertical-align: middle; /* Centraliza verticalmente o conteúdo das células */
-}
-
-/* Cabeçalho da tabela */
-#itemTable th {
-    background-color: #4CAF50; /* Cor de fundo do cabeçalho */
-    color: white; /* Cor do texto do cabeçalho */
-    font-weight: bold; /* Negrito para o texto do cabeçalho */
-}
-
-/* Efeito hover nas linhas da tabela */
-#itemTable tbody tr:hover {
-    background-color: #e9e9e9; /* Cor de fundo ao passar o mouse sobre a linha */
-}
-
-/* Estilo para o checkbox na tabela */
-#itemTable input[type="checkbox"] {
-    margin: 0; /* Remove a margem direita */
-    display: block; /* Faz o checkbox se comportar como bloco */
-    margin-left: auto; /* Centraliza horizontalmente */
-    margin-right: auto; /* Centraliza horizontalmente */
-}
-
-/* Centraliza a célula que contém o checkbox */
-#itemTable td:first-child {
-    text-align: center; /* Centraliza o conteúdo da célula */
-}
-
-/* Efeito ao passar o mouse sobre a linha da tabela */
-#itemTable tbody tr:hover {
-    background-color: #e9e9e9; /* Realça a linha ao passar o mouse */
-}
-
-/* Estilo de botão dentro da tabela (se necessário) */
-#itemTable tbody tr button {
-    background-color: #f44336; /* Cor de fundo do botão */
-    color: white; /* Cor do texto do botão */
-    border: none; /* Remove a borda do botão */
-    padding: 6px 12px; /* Espaçamento interno do botão */
-    cursor: pointer; /* Muda o cursor ao passar o mouse sobre o botão */
-    border-radius: 3px; /* Bordas arredondadas para o botão */
-    font-size: 0.9rem; /* Tamanho da fonte do botão */
-}
-
-#itemTable tbody tr button:hover {
-    background-color: #e53935; /* Cor do botão ao passar o mouse */
-}
-
 /* Estilos gerais para os rótulos e selects */
 label {
     font-size: 16px;
@@ -177,53 +95,85 @@ select {
     transition: border-color 0.3s;
 }
 
-/* Efeito ao focar no select */
 select:focus {
     border-color: #007bff;
     background-color: #fff;
 }
 
-/* Adiciona espaçamento entre os selects */
 select + select {
     margin-left: 20px;
 }
 
-/* Lista de itens */
-#itemList {
-    list-style-type: none;
-    padding: 0;
+.button-container {
+    margin-bottom: 20px; /* Espaço entre os botões e a tabela */
 }
 
-#itemList li div {
-    margin-bottom: 5px; /* Adiciona espaçamento entre as linhas */
+.button-container button {
+    background-color: #4CAF50; /* Cor de fundo do botão */
+    color: white; /* Cor do texto do botão */
+    padding: 10px 15px; /* Espaçamento interno */
+    border: none; /* Sem borda */
+    border-radius: 5px; /* Cantos arredondados */
+    cursor: pointer; /* Cursor de ponteiro ao passar o mouse */
+    margin-right: 10px; /* Espaçamento entre os botões */
 }
 
-#itemList li {
+.button-container button:hover {
+    background-color: #45a049; /* Cor de fundo ao passar o mouse */
+}
+
+
+/* Estilização da tabela de itens */
+#itemTable {
+    width: 60%; /* Define a largura da tabela */
+    margin: 0 auto; /* Centraliza a tabela na página */
+    border-collapse: collapse;
     background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
+    margin-bottom: 20px;
+}
+
+/* Estilização das células da tabela */
+#itemTable th, 
+#itemTable td {
     padding: 12px;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: flex-start; /* Alinhamento flexível na vertical */
-    justify-content: flex-start;
-    font-size: 13px; /* Tamanho da fonte dos itens da lista */
-    color: #333; /* Cor do texto */
-    flex-direction: row; /* Mantém o checkbox ao lado */
+    text-align: center; /* Centraliza o conteúdo das células */
+    vertical-align: middle; /* Centraliza verticalmente o conteúdo das células */
 }
 
-/* Estilo para o checkbox */
-#itemList input[type="checkbox"] {
-    margin-right: 15px; /* Espaçamento entre o checkbox e o texto */
+/* Cabeçalho da tabela */
+#itemTable th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
 }
 
-/* Efeito ao passar o mouse sobre o item da lista */
-#itemList li:hover {
+/* Efeito hover nas linhas da tabela */
+#itemTable tbody tr:hover {
     background-color: #e9e9e9;
-    border-color: #ccc;
 }
 
-#itemList li button {
+/* Estilo para o checkbox na tabela */
+#itemTable input[type="checkbox"] {
+    margin: 0; /* Remove a margem direita */
+    display: block; /* Faz o checkbox se comportar como bloco */
+    margin-left: auto; /* Centraliza horizontalmente */
+    margin-right: auto; /* Centraliza horizontalmente */
+}
+
+/* Centraliza a célula que contém o checkbox */
+#itemTable td:first-child {
+    text-align: center; /* Centraliza o conteúdo da célula */
+}
+
+/* Efeito ao passar o mouse sobre a linha da tabela */
+#itemTable tbody tr:hover {
+    background-color: #e9e9e9;
+}
+
+/* Estilo de botão dentro da tabela (se necessário) */
+#itemTable tbody tr button {
     background-color: #f44336;
     color: white;
     border: none;
@@ -233,7 +183,7 @@ select + select {
     font-size: 0.9rem;
 }
 
-#itemList li button:hover {
+#itemTable tbody tr button:hover {
     background-color: #e53935;
 }
 
@@ -254,22 +204,22 @@ select + select {
 
 /* Estilos para o modal */
 .modal {
-    display: none; /* Oculto por padrão */
+    display: none;
     position: fixed;
-    z-index: 1; /* Garante que ficará acima de todo o conteúdo */
+    z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fundo transparente escuro */
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
     background-color: #fff;
-    margin: 15% auto; /* Alinha verticalmente */
+    margin: 15% auto;
     padding: 20px;
     border-radius: 5px;
-    width: 80%; /* Largura do modal */
+    width: 80%;
     max-width: 500px;
 }
 
@@ -287,7 +237,6 @@ select + select {
     cursor: pointer;
 }
 
-
 /* Layout responsivo */
 @media (max-width: 768px) {
     form input {
@@ -303,12 +252,12 @@ select + select {
         margin-bottom: 10px;
     }
 
-    #itemList li {
-        flex-direction: column;
-        align-items: flex-start;
+    #itemTable td, 
+    #itemTable th {
+        font-size: 14px;
     }
 
-    #itemList li button {
+    #itemTable tbody tr button {
         width: 100%;
         margin-top: 10px;
     }

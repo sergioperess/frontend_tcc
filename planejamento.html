@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planejamento</title>
+    <link rel="stylesheet" href="planejamento.css">
+</head>
+<body>
+
+    <header>
+        <h1>Página de Planejamento</h1>
+    </header>
+    <main>
+        <section class="actions">
+            <button id="create-item">Adicionar Novo Planejamento</button>
+        </section>
+
+        <section class="item-management">
+
+            <div id="createItemModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Criar Item</h2>
+                    <form id="createForm">
+                        <input type="text" class="valor" name="valor" placeholder="Valor">
+                        <label for="tipoId">Tipo de Gasto:</label>
+                        <select class="type" name="type" id="tipoId">
+                            <option value="" disabled selected>Selecione o tipo de gasto</option>
+                        </select>
+                        <label for="typeId">Mês:</label>
+                        <select class="mes" name="mes" id="mes">
+                            <option value="" disabled selected>Selecione o mês</option>
+                        </select>
+                        <label for="typeId">Ano:</label>
+                        <select class="ano" name="ano" id="ano">
+                        </select>
+                        <button type="submit">Criar</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="logout">
+                <button type="submit">Sair</button>
+            </div>
+
+        </section>
+    </main>
+    <script src="planejamento.js"></script>
+</body>
+</html>
