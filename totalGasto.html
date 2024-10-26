@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Total de Gastos</title>
-    <link rel="stylesheet" href="transaction.css">
+    <title>Relatório de Gastos</title>
+    <link rel="stylesheet" href="totalGasto.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 </head>
 <body>
 
     <header>
-        <h1>Total Gasto</h1>
+        <h1>Relatório de Gastos</h1>
+        <a href="gasto.html">Tipo de gasto</a>
+        <a href="planejamento.html">Planejamento</a>
+        <a href="transaction.html">Transações</a>
     </header>
     <main>
 
         <section class="item-management">
-            
-            <h2>Tabela de Itens</h2>
 
             <label for="filterMonth">Filtrar por Mês:</label>
             <select id="filterMonth">
@@ -38,6 +41,12 @@
             <select id="filterYear">
     
             </select>
+
+            <div class="chart-container">
+                <canvas id="myChart"></canvas>
+            </div>
+
+            <h2>Tabela de Itens</h2>
 
             <table id="itemTable">
                 <thead>

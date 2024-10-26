@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let gastosPorTipo = {}; // Armazena os gastos por tipo
     let somaPlanejamentoPorId = {};
 
+    let myChart;
+
     // Função para ler e listar todos os nomes de gastos
     function listaGasto() {
         fetch(`http://localhost:8080/api/gastos/list/${localStorage.getItem('userId')}`, {
@@ -96,23 +98,69 @@ document.addEventListener("DOMContentLoaded", function() {
                     });
 
                 }
+                renderGastosPorTipo(gastosPorTipo, somaPlanejamentoPorId); // Renderiza a tabela inicialmente
             })
             .catch(error => {
                 console.error(`Erro ao carregar planejamento para o gasto ${idGasto}:`, error);
             });
         });
+    }
+
+    function renderizarGrafico(gastosPorTipo, somaPlanejamentoPorId) {
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        // Destruir o gráfico existente se já houver um
+        if (myChart) {
+            myChart.destroy();
+        }
     
-        // Espera que todas as requisições sejam concluídas antes de retornar os resultados
-        return Promise.all(fetchPromises).then(() => {
-            console.log("Lista completa de planejamentos:", listaCompleta);
-            return {
-                somaPlanejamentoPorId, // Retorna o total acumulado por tipo
-                listaCompleta // Retorna a lista completa de objetos de planejamento
-            };
+        const labels = Object.keys(gastosPorTipo);
+        const dadosGastos = Object.values(gastosPorTipo);
+        const dadosPlanejamento = Object.values(somaPlanejamentoPorId);
+    
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels, 
+                datasets: [
+                    {
+                        label: 'Planejamento',
+                        data: dadosPlanejamento,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Gastos',
+                        data: dadosGastos,
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },plugins: {
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        offset: -4,
+                        formatter: (value) => `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, // Formata o valor com "R$"
+                        color: 'black',
+                        font: {
+                            weight: 'bold'
+                        }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels] // Adicione o plugin para mostrar os valores
         });
     }
-    
-    
 
     function renderGastosPorTipo(gastosPorTipo, somaPlanejamentoPorId) {
         const tableBody = document.getElementById("itemTable").querySelector("tbody"); // Seleciona o corpo da tabela
@@ -171,6 +219,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
         // Adiciona a linha de total ao corpo da tabela
         tableBody.appendChild(totalRow);
+
+        // Chamar a função do gráfico ao final do preenchimento da tabela
+        renderizarGrafico(gastosPorTipo, somaPlanejamentoPorId);
     }
     
 
@@ -196,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Aplica o filtro de ano se um ano for selecionado
             if (filterYear) {
                 filteredItems = filteredItems.filter(item => {
-                    const itemYear = new Date(item.date).getFullYear(); // Extrai o ano do item
+                    const itemYear = item.ano; // Extrai o ano do item
                     return itemYear === parseInt(filterYear); // Compara com o ano selecionado
                 });
 
@@ -209,9 +260,8 @@ document.addEventListener("DOMContentLoaded", function() {
             // Aplica o filtro de mês se um mês for selecionado
             if (filterMonth) {
                 filteredItems = filteredItems.filter(item => {
-                    const itemMonthIndex = new Date(item.date).getMonth(); // Extrai o índice do mês (0-11)
-                    const itemMonthName = mesesPorExtenso[itemMonthIndex]; // Mapeia para o nome do mês
-                    return itemMonthName === filterMonth; // Compara com o mês selecionado
+                    const itemMonthIndex = item.mes; // O mês está armazenado como número (1-12)
+                    return mesesPorExtenso[itemMonthIndex - 1] === filterMonth; // Compara com o nome do mês selecionado
                 });
 
                 planejamentoItems = planejamentoItems.filter(item => {
@@ -295,6 +345,25 @@ document.addEventListener("DOMContentLoaded", function() {
     function updateValor(valor) {
         return valor.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'});
     }
+
+    // Função para excluir o cookie
+    function excluirCookie(nome) {
+        criarCookie(nome, "", -1);
+    }
+
+      // Função para criar o cookie
+      function criarCookie(nome, valor, diasExpiracao) {
+        let dataExpiracao = "";
+        if (diasExpiracao) {
+            let data = new Date();
+            data.setTime(data.getTime() + (diasExpiracao * 24 * 60 * 60 * 1000));
+            dataExpiracao = "; expires=" + data.toUTCString();
+        }
+        // Adicionando SameSite=Lax para compatibilidade com Chrome
+        document.cookie = nome + "=" + valor + dataExpiracao + "; path=/; SameSite=Lax";
+    }
+
+
 
     // Função de logout
     document.getElementById("logout").addEventListener("click", function(e) {

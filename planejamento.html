@@ -10,6 +10,9 @@
 
     <header>
         <h1>Página de Planejamento</h1>
+        <a href="gasto.html">Tipo de gasto</a>
+        <a href="totalGasto.html">Relatório de Gastos</a>
+        <a href="transaction.html">Transações</a>
     </header>
     <main>
         <section class="actions">
@@ -21,8 +24,9 @@
             <div id="createItemModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h2>Criar Item</h2>
+                    <h2>Criar Planejamento</h2>
                     <form id="createForm">
+                        <label>Valor:</label>
                         <input type="text" class="valor" name="valor" placeholder="Valor">
                         <label for="tipoId">Tipo de Gasto:</label>
                         <select class="type" name="type" id="tipoId">
@@ -40,8 +44,45 @@
                 </div>
             </div>
 
+            <label for="filterMonth">Filtrar por Mês:</label>
+            <select id="filterMonth">
+                <option value="">Todos</option>
+                <option value="janeiro">Janeiro</option>
+                <option value="fevereiro">Fevereiro</option>
+                <option value="março">Março</option>
+                <option value="abril">Abril</option>
+                <option value="maio">Maio</option>
+                <option value="junho">Junho</option>
+                <option value="julho">Julho</option>
+                <option value="agosto">Agosto</option>
+                <option value="setembro">Setembro</option>
+                <option value="outubro">Outubro</option>
+                <option value="novembro">Novembro</option>
+                <option value="dezembro">Dezembro</option>
+            </select>
+
+            <label for="filterYear">Filtrar por Ano:</label>
+            <select id="filterYear">
+
+            </select>
+
+            <h2>Tabela de Itens</h2>
+
+            <table id="itemTable">
+                <thead>
+                    <tr>
+                        <th>Tipo de Gasto</th>
+                        <th>Data</th>
+                        <th>Valor Planejado</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
             <div id="logout">
-                <button type="submit">Sair</button>
+                <button type="button">Sair</button>
             </div>
 
         </section>

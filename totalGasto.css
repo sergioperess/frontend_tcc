@@ -20,6 +20,8 @@ h1 {
 
 main {
     padding: 20px;
+    display: flex;
+    justify-content: center; /* Centraliza o conteúdo horizontalmente */
 }
 
 header a {
@@ -31,6 +33,14 @@ header a {
 
 header a:hover {
     color: #ddd; /* Altera a cor ao passar o mouse */
+}
+
+/* Estilo do contêiner do gráfico */
+.chart-container {
+    width: 100%; /* Para que o gráfico ocupe toda a largura disponível */
+    height: 400px; /* Altura fixa do gráfico */
+    margin: 20px 20px; /* Espaçamento acima e abaixo do gráfico */
+    position: relative; /* Necessário para o gráfico ser responsivo */
 }
 
 h2 {
@@ -92,10 +102,6 @@ form button {
 
 form button:hover {
     background-color: #45a049;
-}
-
-#updateForm, #deleteForm {
-    display: none;
 }
 
 .button-container {
@@ -286,61 +292,25 @@ select + select {
 }
 
 
-
-.modal-content {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-}
-
-.modal-content h2 {
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
-
-.modal-content form {
-    display: flex;
-    flex-direction: column;
-}
-
-.modal-content input,
-.modal-content select {
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.modal-content button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 0.75rem;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.modal-content button:hover {
-    background-color: #45a049;
-}
-
-
 /* Estilos para o modal */
 .modal {
-    display: none;
+    display: none; /* Oculto por padrão */
     position: fixed;
-    z-index: 1;
+    z-index: 1; /* Garante que ficará acima de todo o conteúdo */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    justify-content: center;
-    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo transparente escuro */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto; /* Alinha verticalmente */
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%; /* Largura do modal */
+    max-width: 500px;
 }
 
 .close {
@@ -381,5 +351,21 @@ select + select {
     #itemList li button {
         width: 100%;
         margin-top: 10px;
+    }
+
+    header {
+        padding: 15px;
+    }
+
+    .item-management {
+        padding: 10px; /* Adiciona espaço nas laterais */
+    }
+
+    .chart-container {
+        height: 300px; /* Reduz a altura do gráfico em telas menores */
+    }
+
+    #itemTable {
+        font-size: 14px; /* Diminui o tamanho da fonte em telas menores */
     }
 }

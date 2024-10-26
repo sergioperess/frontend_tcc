@@ -10,10 +10,13 @@
 
     <header>
         <h1>Página de Transação</h1>
+        <a href="gasto.html">Tipo de gasto</a>
+        <a href="totalGasto.html">Relatório de Gastos</a>
+        <a href="planejamento.html">Planejamento</a>
     </header>
     <main>
         <section class="actions">
-            <button id="create-item">Adicionar Gasto</button>
+            <button id="create-item">Criar Nova Transação</button>
         </section>
 
         <section class="item-management">
@@ -21,20 +24,27 @@
             <div id="createItemModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h2>Criar Novo Item</h2>
+                    <h2>Criar Transação</h2>
                     <form id="createForm">
+                        <label>Valor:</label>
                         <input type="text" class="valor" name="valor" placeholder="Valor">
                         <label for="typeId">Tipo de Gasto:</label>
                         <select class="type" name="type" id="typeId">
                             <option value="" disabled selected>Selecione o tipo de gasto</option>
                         </select>
+                        <label>Descrição:</label>
                         <input type="text" class="description" name="description" placeholder="Descrição">
+                        <label for="typeId">Mês:</label>
+                        <select class="mes" name="mes" id="mes">
+                            <option value="" disabled selected>Selecione o mês</option>
+                        </select>
+                        <label for="typeId">Ano:</label>
+                        <select class="ano" name="ano" id="ano">
+                        </select>
                         <button type="submit">Criar</button>
                     </form>
                 </div>
             </div>
-            
-            <h2>Tabela de Itens</h2>
 
             <label for="filterType">Filtrar por Tipo de Gasto:</label>
             <select id="filterType">
@@ -63,6 +73,8 @@
                 <button id="deselectAll">Remover Seleção</button>
             </div>
 
+            <h2>Tabela de Itens</h2>
+
             <table id="itemTable">
                 <thead>
                     <tr>
@@ -79,19 +91,26 @@
                 </tbody>
             </table>
 
-            <h2>Atualizar Item</h2>
             <form id="updateForm">
+                <h2>Atualizar Item</h2>
                 <input type="text" class="valor" id="valor" placeholder="Valor">
                 <label for="updateTypeId">Tipo de Gasto:</label>
                 <select class="type" name="type" id="updateTypeId">
                     <option value="" disabled selected>Selecione o tipo de gasto</option>
                 </select>
                 <input type="text" class="description" id="description" placeholder="Descrição">
+                <label for="typeId">Mês:</label>
+                <select class="mes" name="mes" id="mesUpdate">
+                <option value="" disabled selected>Selecione o mês</option>
+                </select>
+                <label for="typeId">Ano:</label>
+                <select class="ano" name="ano" id="anoUpdate">
+                </select>
                 <button type="submit">Atualizar</button>
             </form>
 
-            <h2>Deletar Item</h2>
             <form id="deleteForm">
+                <h2>Deletar Item</h2>
                 <button type="submit" id="delete-item ">Deletar</button>
             </form>
 

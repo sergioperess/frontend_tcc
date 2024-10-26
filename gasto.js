@@ -1,21 +1,21 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    // Pegando os elementos do DOM
-    var modal = document.getElementById("createItemModal");
-    var btn = document.getElementById("create-item");
-    var span = document.getElementsByClassName("close")[0];
+    // Obtém os elementos do DOM
+    const modal = document.getElementById("createItemModal");
+    const btn = document.getElementById("create-item");
+    const closeBtn = document.querySelector(".close");
 
-    // Quando o botão "Criar Novo Item" for clicado, exibe o modal
+    // Quando o usuário clicar no botão "Adicionar Novo Planejamento", o modal é exibido
     btn.onclick = function() {
-        modal.style.display = "block";
+        modal.style.display = "flex"; // Altera para "flex" para centralizar
     }
 
-    // Quando o usuário clicar no "X", o modal será fechado
-    span.onclick = function() {
+    // Quando o usuário clicar no "X", o modal é fechado
+    closeBtn.onclick = function() {
         modal.style.display = "none";
     }
 
-    // Quando o usuário clicar fora do modal, ele também será fechado
+    // Quando o usuário clicar fora do modal, ele também é fechado
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
@@ -128,8 +128,29 @@ document.addEventListener("DOMContentLoaded", function() {
                 removeInArray(item.id);
             }
             console.log(arrayId); // Exibe o array atualizado no console
+            toggleButtons();
         });
     });
+    }
+
+    // Função para habilitar/desabilitar os botões de atualizar e deletar
+    function toggleButtons() {
+        const updateFormContainer = document.getElementById('updateForm');
+        const deleteFormContainer = document.getElementById('deleteForm');
+        
+        // Mostra o formulário de atualizar se apenas um item estiver selecionado
+        if (arrayId.length === 1) {
+            updateFormContainer.style.display = "block";
+            deleteFormContainer.style.display = "block"; // Também podemos exibir o botão de deletar
+        } else if (arrayId.length > 1) {
+            // Se mais de um item for selecionado, apenas o botão de deletar será exibido
+            updateFormContainer.style.display = "none";
+            deleteFormContainer.style.display = "block";
+        } else {
+            // Nenhum item selecionado, esconde ambos os formulários
+            updateFormContainer.style.display = "none";
+            deleteFormContainer.style.display = "none";
+        }
     }
 
     // Função para atualizar um item
@@ -139,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const nome = document.getElementById("nome").value;
 
         const data = { 
-            nome: nome.charAt(0).toUpperCase() + index.slice(1).toLowerCase()
+            nome: nome.charAt(0).toUpperCase() + nome.slice(1).toLowerCase()
         };
 
         if(arrayId.length === 1){
@@ -241,6 +262,24 @@ document.addEventListener("DOMContentLoaded", function() {
             arrayId.splice(index, 1);
         }
     }
+
+    // Função para excluir o cookie
+    function excluirCookie(nome) {
+        criarCookie(nome, "", -1);
+    }
+
+    // Função para criar o cookie
+    function criarCookie(nome, valor, diasExpiracao) {
+        let dataExpiracao = "";
+        if (diasExpiracao) {
+            let data = new Date();
+            data.setTime(data.getTime() + (diasExpiracao * 24 * 60 * 60 * 1000));
+            dataExpiracao = "; expires=" + data.toUTCString();
+        }
+        // Adicionando SameSite=Lax para compatibilidade com Chrome
+        document.cookie = nome + "=" + valor + dataExpiracao + "; path=/; SameSite=Lax";
+    }
+
 
     // Função de logout
     document.getElementById("logout").addEventListener("click", function(e) {

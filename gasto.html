@@ -10,10 +10,13 @@
 
     <header>
         <h1>Página de Gastos</h1>
+        <a href="transaction.html">Transações</a>
+        <a href="totalGasto.html">Relatório de Gastos</a>
+        <a href="planejamento.html">Planejamento</a>
     </header>
     <main>
         <section class="actions">
-            <button id="create-item">Adicionar Tipo de Gasto</button>
+            <button id="create-item">Criar Novo Tipo de Gasto</button>
         </section>
 
         <section class="item-management">
@@ -21,15 +24,16 @@
             <div id="createItemModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h2>Criar Item</h2>
+                    <h2>Criar Gasto</h2>
                     <form id="createForm">
+                        <label>Nome do gasto:</label>
                         <input type="text" class="nome" name="nome" placeholder="Tipo de Gasto">
                         <button type="submit">Criar</button>
                     </form>
                 </div>
             </div>
 
-            <h2>Tabela de Gastos</h2>
+            <h2>Tabela de Topos de Gastos</h2>
 
             <div class="button-container">
                 <button id="selectAll">Selecionar Todos</button>
@@ -49,19 +53,19 @@
                 </tbody>
             </table>
 
-            <h2>Atualizar Item</h2>
             <form id="updateForm">
+                <h2>Atualizar Item</h2>
                 <input type="text" class="nome" id="nome" placeholder="Tipo de Gasto">
                 <button type="submit">Atualizar</button>
             </form>
 
-            <h2>Deletar Item</h2>
             <form id="deleteForm">
+                <h2>Deletar Item</h2>
                 <button type="submit" id="delete-item ">Deletar</button>
             </form>
 
             <div id="logout">
-                <button type="submit">Sair</button>
+                <button type="button">Sair</button>
             </div>
 
         </section>

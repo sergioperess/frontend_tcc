@@ -15,10 +15,29 @@ header {
 
 h1 {
     margin: 0;
+    margin-bottom: 15px; /* Adiciona uma margem abaixo do h1 */
+}
+
+h2 {
+    text-align: center; /* Centraliza o texto */
+    margin-bottom: 20px; /* Adiciona espaço abaixo do título */
+    font-size: 1.5rem; /* Ajusta o tamanho da fonte, se necessário */
+    color: #333; /* Define a cor do texto, se desejado */
 }
 
 main {
     padding: 20px;
+}
+
+header a {
+    color: white;
+    text-decoration: none; /* Sublinha o texto como um link */
+    font-size: 14px; /* Diminui o tamanho da fonte, ajuste conforme necessário */
+    margin-right: 15px; /* Adiciona um espaço à direita de cada link */
+}
+
+header a:hover {
+    color: #ddd; /* Altera a cor ao passar o mouse */
 }
 
 /* Seção de ações */
@@ -73,6 +92,10 @@ form button {
 
 form button:hover {
     background-color: #45a049;
+}
+
+#updateForm, #deleteForm {
+    display: none;
 }
 
 /* Estilos gerais para os rótulos e selects */
@@ -187,7 +210,13 @@ select + select {
     background-color: #e53935;
 }
 
-/* Estilização do botão de sair */
+
+#logout {
+    display: inline-block;
+    text-align: center;
+    margin-top: 2rem;
+}
+
 #logout button {
     background-color: #f44336;
     color: white;
@@ -196,13 +225,16 @@ select + select {
     border-radius: 5px;
     cursor: pointer;
     font-size: 1rem;
+    display: inline-block;
 }
 
 #logout button:hover {
     background-color: #e53935;
 }
 
-/* Estilos para o modal */
+
+
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -211,16 +243,50 @@ select + select {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
-    background-color: #fff;
-    margin: 15% auto;
-    padding: 20px;
-    border-radius: 5px;
-    width: 80%;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 90%;
     max-width: 500px;
+    position: relative;
+}
+
+.modal-content h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content input,
+.modal-content select {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.modal-content button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.modal-content button:hover {
+    background-color: #45a049;
 }
 
 .close {

@@ -1,31 +1,35 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    // Pegando os elementos do DOM
-    var modal = document.getElementById("createItemModal");
-    var btn = document.getElementById("create-item");
-    var span = document.getElementsByClassName("close")[0];
+    // Obtém os elementos do DOM
+    const modal = document.getElementById("createItemModal");
+    const btn = document.getElementById("create-item");
+    const closeBtn = document.querySelector(".close");
 
-    // Quando o botão "Criar Novo Item" for clicado, exibe o modal
+    // Quando o usuário clicar no botão "Adicionar Novo Planejamento", o modal é exibido
     btn.onclick = function() {
-        modal.style.display = "block";
+        modal.style.display = "flex"; // Altera para "flex" para centralizar
     }
 
-    // Quando o usuário clicar no "X", o modal será fechado
-    span.onclick = function() {
+    // Quando o usuário clicar no "X", o modal é fechado
+    closeBtn.onclick = function() {
         modal.style.display = "none";
     }
 
-    // Quando o usuário clicar fora do modal, ele também será fechado
+    // Quando o usuário clicar fora do modal, ele também é fechado
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
     }
-
+    
     const apiUrl = "http://localhost:8080/api/transaction";
 
     loadGastoOptions();
     loadGastoOptions1();
+    loadAnoOptions();
+    loadMesOptions();
+    loadAnoOptions1();
+    loadMesOptions1();
 
     var arrayId = [];
     // Array de todos os itens de gastos (fetched)
@@ -38,16 +42,44 @@ document.addEventListener("DOMContentLoaded", function() {
         const valor = document.querySelector(".valor");
         const type = document.querySelector(".type");
         const description = document.querySelector(".description");
+        const mes = document.querySelector("#mes");
+        const ano = document.querySelector("#ano");
     
         // Validação para garantir que o tipo de gasto foi selecionado
-        if (!type) {
+        if (!type.value) {
             alert("Por favor, selecione um tipo de gasto.");
+            return;
+        }
+
+        // Validação para garantir que o valor não está vazio
+        if (!valor.value) {
+            alert("Por favor, insira um valor.");
+            return;
+        }
+
+        // Validação para garantir que a descrição não está vazia
+        if (!description.value) {
+            alert("Por favor, insira uma descrição.");
+            return;
+        }
+
+        // Validação para garantir que o mês foi selecionado
+        if (!mes.value) {
+            alert("Por favor, selecione um mês.");
+            return;
+        }
+
+        // Validação para garantir que o ano foi selecionado
+        if (!ano.value) {
+            alert("Por favor, selecione um ano.");
             return;
         }
 
         const data = { 
             valor: replaceDot(valor.value), 
             typeId: type.value,
+            mes: mes.value,
+            ano: ano.value,
             description: description.value,
             userId: localStorage.getItem('userId')
         };
@@ -65,6 +97,8 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             console.log("Item criado:", data);
+            carregarOpcoes();
+            document.getElementById("filterMonth").value = "";
             fetchItems();
         })
         .catch(error => console.error("Erro ao criar item:", error));
@@ -267,10 +301,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 
                 if (filterMonth !== "") {
                     filteredItems = filteredItems.filter(item => {
-                        const itemMonthIndex = new Date(item.date).getMonth(); // Extrai o índice do mês (0-11)
-                        const itemMonthName = mesesPorExtenso[itemMonthIndex]; // Mapeia para o nome do mês
-                        return itemMonthName === filterMonth;
-                    });
+                        const itemMonthIndex = item.mes; // O mês está armazenado como número (1-12)
+                        return mesesPorExtenso[itemMonthIndex - 1] === filterMonth; // Compara com o nome do mês selecionado                        
+                    });          
                 }
             }
         
@@ -285,6 +318,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Chama a função para carregar as opções quando a página carregar
     window.onload = carregarOpcoes;
+
+    // Função para habilitar/desabilitar os botões de atualizar e deletar
+    function toggleButtons() {
+        const updateFormContainer = document.getElementById('updateForm');
+        const deleteFormContainer = document.getElementById('deleteForm');
+        
+        // Mostra o formulário de atualizar se apenas um item estiver selecionado
+        if (arrayId.length === 1) {
+            updateFormContainer.style.display = "block";
+            deleteFormContainer.style.display = "block"; // Também podemos exibir o botão de deletar
+        } else if (arrayId.length > 1) {
+            // Se mais de um item for selecionado, apenas o botão de deletar será exibido
+            updateFormContainer.style.display = "none";
+            deleteFormContainer.style.display = "block";
+        } else {
+            // Nenhum item selecionado, esconde ambos os formulários
+            updateFormContainer.style.display = "none";
+            deleteFormContainer.style.display = "none";
+        }
+    }
 
     // Função para renderizar itens na tabela com base nos dados fornecidos
     function renderItems(items) {
@@ -317,7 +370,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Criação da célula de Data
             const dataCell = document.createElement("td");
-            dataCell.textContent = updateDateTime(item.date);
+            dataCell.textContent = updateDateTime(item.mes, item.ano);
             row.appendChild(dataCell);
 
             // Criação da célula de Tipo de Gasto
@@ -341,6 +394,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     removeInArray(item.id);
                 }
                 console.log(arrayId); // Exibe o array atualizado no console
+                toggleButtons();
             });
 
             // Adiciona evento de clique à linha, sem alterar o array
@@ -370,24 +424,17 @@ document.addEventListener("DOMContentLoaded", function() {
         if (index > -1) {
             arrayId.splice(index, 1);
         }
+        toggleButtons();
     }
 
-    // Função para formatação de data
-    function updateDateTime(data) {
-        const now = new Date(data);
-        const options = {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            timeZoneName: 'short'
-        };
-        const formattedDate = now.toLocaleString('pt-BR', options);
-        return formattedDate;
-    }
+   // Função para formatação de data
+    function updateDateTime(mes, ano) {
+        const month = String(mes).padStart(2, '0'); // Garante que o mês tenha 2 dígitos
+        const year = String(ano); // Converte o ano para string, se necessário
 
+        // Retorna a data no formato mm/yyyy
+        return `${month}/${year}`;
+    }
     // Função para formatação da moeda 
     function updateValor(valor){
         return valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
@@ -422,6 +469,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const valor = document.getElementById("valor").value;
         const type = document.getElementById("updateTypeId").value;
         const description = document.getElementById("description").value;
+        const mes = document.querySelector("#mesUpdate");
+        const ano = document.querySelector("#anoUpdate");
 
         // Validação para garantir que o tipo de gasto foi selecionado
         if (!type) {
@@ -429,10 +478,37 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
+        // Validação para garantir que o valor não está vazio
+        if (!valor) {
+            alert("Por favor, insira um valor.");
+            return;
+        }
+
+        // Validação para garantir que a descrição não está vazia
+        if (!description) {
+            alert("Por favor, insira uma descrição.");
+            return;
+        }
+
+        // Validação para garantir que o mês foi selecionado
+        if (!mes.value) {
+            alert("Por favor, selecione um mês.");
+            return;
+        }
+
+        // Validação para garantir que o ano foi selecionado
+        if (!ano.value) {
+            alert("Por favor, selecione um ano.");
+            return;
+        }
+
+
         const data = { 
             valor: replaceDot(valor), 
             typeId: type,
-            description: description
+            description: description,
+            mes: mes.value,
+            ano: ano.value
         };
 
         console.log(data)
@@ -452,6 +528,8 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(response => response.json())
             .then(data => {
                 console.log("Item atualizado:", data);
+                document.getElementById("filterMonth").value = "";
+                carregarOpcoes();
                 fetchItems();
                 removeInArray(aux);
             })
@@ -502,6 +580,92 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = './home.html';
 
     });
+
+    function loadAnoOptions() {
+        const select = document.querySelector("#ano"); // Seleciona o <select> de anos
+    
+        // Obtém o ano atual
+        const anoAtual = new Date().getFullYear();
+        const anosAdicionais = 5; // Quantos anos à frente serão exibidos
+    
+        // Itera pelos anos e cria <option> para cada ano
+        for (let i = 0; i <= anosAdicionais; i++) {
+            const option = document.createElement("option");
+            option.value = anoAtual - i; // Define o valor da opção como o ano
+            option.textContent = anoAtual - i; // Define o texto da opção como o ano
+            select.appendChild(option); // Adiciona a opção ao select
+        }
+    }
+
+    function loadMesOptions() {
+        const select = document.querySelector("#mes"); // Seleciona o <select> de meses
+    
+        // Array com os nomes dos meses
+        const meses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+    
+        // Limpa o select antes de adicionar os novos valores
+        select.innerHTML = "";
+    
+        // Adiciona uma opção padrão
+        const defaultOption = document.createElement("option");
+        defaultOption.value = ""; // Valor vazio para a opção padrão
+        defaultOption.textContent = "Selecione o mês"; // Texto da opção padrão
+        select.appendChild(defaultOption);
+    
+        // Itera pelos meses e cria <option> para cada mês
+        meses.forEach((mes, index) => {
+            const option = document.createElement("option");
+            option.value = index + 1; // Define o valor da opção como o número do mês (1 para Janeiro, etc.)
+            option.textContent = mes; // Define o texto da opção como o nome do mês
+            select.appendChild(option); // Adiciona a opção ao select
+        });
+    }
+
+    function loadAnoOptions1() {
+        const select = document.querySelector("#anoUpdate"); // Seleciona o <select> de anos
+    
+        // Obtém o ano atual
+        const anoAtual = new Date().getFullYear();
+        const anosAdicionais = 5; // Quantos anos à frente serão exibidos
+    
+        // Itera pelos anos e cria <option> para cada ano
+        for (let i = 0; i <= anosAdicionais; i++) {
+            const option = document.createElement("option");
+            option.value = anoAtual - i; // Define o valor da opção como o ano
+            option.textContent = anoAtual - i; // Define o texto da opção como o ano
+            select.appendChild(option); // Adiciona a opção ao select
+        }
+    }
+
+    function loadMesOptions1() {
+        const select = document.querySelector("#mesUpdate"); // Seleciona o <select> de meses
+    
+        // Array com os nomes dos meses
+        const meses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+    
+        // Limpa o select antes de adicionar os novos valores
+        select.innerHTML = "";
+    
+        // Adiciona uma opção padrão
+        const defaultOption = document.createElement("option");
+        defaultOption.value = ""; // Valor vazio para a opção padrão
+        defaultOption.textContent = "Selecione o mês"; // Texto da opção padrão
+        select.appendChild(defaultOption);
+    
+        // Itera pelos meses e cria <option> para cada mês
+        meses.forEach((mes, index) => {
+            const option = document.createElement("option");
+            option.value = index + 1; // Define o valor da opção como o número do mês (1 para Janeiro, etc.)
+            option.textContent = mes; // Define o texto da opção como o nome do mês
+            select.appendChild(option); // Adiciona a opção ao select
+        });
+    }
 
     // Carregar a lista de itens ao iniciar a página
     fetchItems();
