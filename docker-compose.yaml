@@ -1,9 +1,9 @@
 include:
   - path:
-    - ../cadastro/docker-compose.yaml
+    - ../backend_tcc/docker-compose.yaml
 
 services:
-  frontend:
+  frontend_tcc:
     build: ./
     ports:
       - "3000:80"
