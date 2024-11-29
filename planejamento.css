@@ -22,25 +22,46 @@ header {
     color: white;
     width: 100%;
     padding: 1rem;
-    text-align: center;
     margin-bottom: 2rem;
+    display: flex; /* Usa Flexbox para organizar os elementos */
+    align-items: center; /* Alinha os itens verticalmente */
 }
 
+/* Contêiner do GIF ou imagem */
+.gif-container {
+    margin-right: -8rem;
+    margin-left: 3rem; /* Espaço entre a imagem e a borda esquerda */
+}
+
+.gif-container img {
+    width: 50px; /* Define a largura da imagem */
+    height: auto; /* Mantém a proporção */
+}
+
+/* Contêiner do título e links */
+.header-content {
+    text-align: center; /* Centraliza o título e os links */
+    flex-grow: 1; /* Faz com que o conteúdo ocupe o espaço restante */
+}
+
+/* Estilo do título */
 header h1 {
     font-size: 2rem;
-    margin-bottom: 15px; /* Adiciona uma margem abaixo do h1 */
+    margin-bottom: 15px; /* Adiciona uma margem abaixo do título */
 }
 
+/* Links */
 header a {
     color: white;
-    text-decoration: none; /* Sublinha o texto como um link */
-    font-size: 14px; /* Diminui o tamanho da fonte, ajuste conforme necessário */
-    margin-right: 15px; /* Adiciona um espaço à direita de cada link */
+    text-decoration: none; /* Remove o sublinhado */
+    font-size: 14px; /* Ajusta o tamanho da fonte */
+    margin-right: 15px; /* Espaçamento entre os links */
 }
 
 header a:hover {
     color: #ddd; /* Altera a cor ao passar o mouse */
 }
+
 
 h2 {
     text-align: center; /* Centraliza o texto */
@@ -263,5 +284,60 @@ select:focus {
 /* Adiciona espaçamento entre os selects */
 select + select {
     margin-left: 20px;
+}
+
+/* Estilização de formulários e inputs */
+form {
+    margin-bottom: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+form input {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+#updateForm, #deleteForm {
+    display: none;
+}
+
+.button-container {
+    margin-bottom: 20px; /* Espaço entre os botões e a tabela */
+}
+
+.button-container button {
+    background-color: #4CAF50; /* Cor de fundo do botão */
+    color: white; /* Cor do texto do botão */
+    padding: 10px 15px; /* Espaçamento interno */
+    border: none; /* Sem borda */
+    border-radius: 5px; /* Cantos arredondados */
+    cursor: pointer; /* Cursor de ponteiro ao passar o mouse */
+    margin-right: 10px; /* Espaçamento entre os botões */
+}
+
+.button-container button:hover {
+    background-color: #45a049; /* Cor de fundo ao passar o mouse */
 }
 

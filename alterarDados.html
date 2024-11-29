@@ -1,0 +1,20 @@
+<!-- Botão de Alterar Senha -->
+<button id="alterarSenhaBtn">Alterar Senha</button>
+
+<!-- Formulário de Alteração de Senha (inicialmente oculto) -->
+<div id="alterarSenhaForm" style="display:none;">
+    <h2>Alterar Senha</h2>
+    <label for="oldPassword">Senha Atual:</label>
+    <input type="password" id="oldPassword" name="oldPassword" placeholder="Digite sua senha atual" required />
+    
+    <label for="newPassword">Nova Senha:</label>
+    <input type="password" id="newPassword" name="newPassword" placeholder="Digite a nova senha" required />
+    
+    <label for="confirmNewPassword">Confirmar Nova Senha:</label>
+    <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="Confirme a nova senha" required />
+    
+    <button type="submit" id="submitNewPassword">Alterar Senha</button>
+    <button type="button" id="cancelChangePassword">Cancelar</button>
+    
+    <div id="errorMessage" style="color: red; display: none;"></div>
+</div>

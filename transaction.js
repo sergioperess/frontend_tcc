@@ -16,11 +16,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Quando o usuário clicar fora do modal, ele também é fechado
-    window.onclick = function(event) {
+    /*window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
+    }*/
     
     const apiUrl = "http://localhost:8080/api/transaction";
 
@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const valor = document.querySelector(".valor");
         const type = document.querySelector(".type");
         const description = document.querySelector(".description");
+        const dia = document.querySelector("#dia");
         const mes = document.querySelector("#mes");
         const ano = document.querySelector("#ano");
     
@@ -57,9 +58,22 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
+        // Validação para garantir que o valor inserido é um número válido e maior que zero
+        const valorFloat = parseFloat(valor.value);
+        if (isNaN(valorFloat) || valorFloat <= 0) {
+            alert("Por favor, insira um número válido e maior que zero.");
+            return;
+        }
+
         // Validação para garantir que a descrição não está vazia
         if (!description.value) {
             alert("Por favor, insira uma descrição.");
+            return;
+        }
+
+        // Validação para garantir que o mês foi selecionado
+        if (!dia.value) {
+            alert("Por favor, selecione um dia.");
             return;
         }
 
@@ -78,13 +92,13 @@ document.addEventListener("DOMContentLoaded", function() {
         const data = { 
             valor: replaceDot(valor.value), 
             typeId: type.value,
+            dia: dia.value,
             mes: mes.value,
             ano: ano.value,
             description: description.value,
             userId: localStorage.getItem('userId')
         };
 
-        
 
         fetch(apiUrl, {
             method: 'POST',
@@ -328,6 +342,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (arrayId.length === 1) {
             updateFormContainer.style.display = "block";
             deleteFormContainer.style.display = "block"; // Também podemos exibir o botão de deletar
+            carregarDadosItem(arrayId[0]);
         } else if (arrayId.length > 1) {
             // Se mais de um item for selecionado, apenas o botão de deletar será exibido
             updateFormContainer.style.display = "none";
@@ -370,7 +385,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Criação da célula de Data
             const dataCell = document.createElement("td");
-            dataCell.textContent = updateDateTime(item.mes, item.ano);
+            dataCell.textContent = updateDateTime(item.dia, item.mes, item.ano);
             row.appendChild(dataCell);
 
             // Criação da célula de Tipo de Gasto
@@ -428,13 +443,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
    // Função para formatação de data
-    function updateDateTime(mes, ano) {
+    function updateDateTime(dia, mes, ano) {
+        const day = String(dia).padStart(2, '0'); // Garante que o dia tenha 2 dígitos
         const month = String(mes).padStart(2, '0'); // Garante que o mês tenha 2 dígitos
         const year = String(ano); // Converte o ano para string, se necessário
 
-        // Retorna a data no formato mm/yyyy
-        return `${month}/${year}`;
+        // Retorna a data no formato dd/mm/yyyy
+        return `${day}/${month}/${year}`;
     }
+
     // Função para formatação da moeda 
     function updateValor(valor){
         return valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
@@ -469,6 +486,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const valor = document.getElementById("valor").value;
         const type = document.getElementById("updateTypeId").value;
         const description = document.getElementById("description").value;
+        const dia = document.querySelector("#diaUpdate");
         const mes = document.querySelector("#mesUpdate");
         const ano = document.querySelector("#anoUpdate");
 
@@ -496,6 +514,12 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
+        // Validação para garantir que o mês foi selecionado
+        if (!dia.value) {
+            alert("Por favor, selecione um dia.");
+            return;
+        }
+
         // Validação para garantir que o ano foi selecionado
         if (!ano.value) {
             alert("Por favor, selecione um ano.");
@@ -507,6 +531,7 @@ document.addEventListener("DOMContentLoaded", function() {
             valor: replaceDot(valor), 
             typeId: type,
             description: description,
+            dia: dia.value,
             mes: mes.value,
             ano: ano.value
         };
@@ -540,6 +565,35 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
     });
+
+    // Função para preencher o formulário com os dados do item a ser atualizado
+    function carregarDadosItem(transactionId) {
+        fetch(`${apiUrl}/${transactionId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${lerCookie("authToken")}`,
+            },
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Erro ao buscar os dados do item.");
+                }
+            })
+            .then((item) => {
+                loadDiaOptions1(item.mes);
+                document.getElementById("valor").value = item.valor || "";
+                document.getElementById("description").value = item.description || "";
+                document.querySelector("#diaUpdate").value = item.dia || "";
+                document.querySelector("#mesUpdate").value = item.mes || "";
+                document.querySelector("#anoUpdate").value = item.ano || "";
+            })
+            .catch((error) => {
+                console.error("Erro ao carregar os dados do item:", error);
+                alert("Não foi possível carregar os dados do item.");
+            });
+    }
 
     // Função para deletar um item
     document.getElementById("deleteForm").addEventListener("submit", function(e) {
@@ -622,7 +676,80 @@ document.addEventListener("DOMContentLoaded", function() {
             option.textContent = mes; // Define o texto da opção como o nome do mês
             select.appendChild(option); // Adiciona a opção ao select
         });
+
+        // Evento para carregar os dias quando um mês é selecionado
+        select.addEventListener("change", () => {
+            const mesSelecionado = parseInt(select.value); // Obtém o valor do mês selecionado
+            loadDiaOptions(mesSelecionado); // Chama a função para carregar os dias
+        });
     }
+
+    function loadDiaOptions(mesSelecionado) {
+        const diaSelect = document.querySelector("#dia"); // Seleciona o <select> de dias
+    
+        // Limpa o select de dias antes de adicionar novos valores
+        diaSelect.innerHTML = "";
+
+        // Adiciona a opção padrão "Selecione o dia"
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Selecione o dia";
+        diaSelect.appendChild(defaultOption);
+    
+        // Verifica se um mês válido foi selecionado
+        if (!mesSelecionado || isNaN(mesSelecionado) || mesSelecionado < 1 || mesSelecionado > 12) {
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Selecione um mês válido";
+            diaSelect.appendChild(defaultOption);
+            return;
+        }
+    
+        // Calcula o número de dias no mês selecionado
+        const diasNoMes = new Date(2024, mesSelecionado, 0).getDate();
+    
+        // Preenche os dias no select
+        for (let dia = 1; dia <= diasNoMes; dia++) {
+            const option = document.createElement("option");
+            option.value = dia; // O valor será o número do dia
+            option.textContent = dia; // O texto exibido também será o número do dia
+            diaSelect.appendChild(option); // Adiciona a opção ao select
+        }
+    }
+
+    function loadDiaOptions1(mesSelecionado) {
+        const diaSelect = document.querySelector("#diaUpdate"); // Seleciona o <select> de dias
+    
+        // Limpa o select de dias antes de adicionar novos valores
+        diaSelect.innerHTML = "";
+
+        // Adiciona a opção padrão "Selecione o dia"
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Selecione o dia";
+        diaSelect.appendChild(defaultOption);
+    
+        // Verifica se um mês válido foi selecionado
+        if (!mesSelecionado || isNaN(mesSelecionado) || mesSelecionado < 1 || mesSelecionado > 12) {
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Selecione um mês válido";
+            diaSelect.appendChild(defaultOption);
+            return;
+        }
+    
+        // Calcula o número de dias no mês selecionado
+        const diasNoMes = new Date(2024, mesSelecionado, 0).getDate();
+    
+        // Preenche os dias no select
+        for (let dia = 1; dia <= diasNoMes; dia++) {
+            const option = document.createElement("option");
+            option.value = dia; // O valor será o número do dia
+            option.textContent = dia; // O texto exibido também será o número do dia
+            diaSelect.appendChild(option); // Adiciona a opção ao select
+        }
+    }
+    
 
     function loadAnoOptions1() {
         const select = document.querySelector("#anoUpdate"); // Seleciona o <select> de anos
@@ -664,6 +791,12 @@ document.addEventListener("DOMContentLoaded", function() {
             option.value = index + 1; // Define o valor da opção como o número do mês (1 para Janeiro, etc.)
             option.textContent = mes; // Define o texto da opção como o nome do mês
             select.appendChild(option); // Adiciona a opção ao select
+        });
+
+        // Evento para carregar os dias quando um mês é selecionado
+        select.addEventListener("change", () => {
+            const mesSelecionado = parseInt(select.value); // Obtém o valor do mês selecionado
+            loadDiaOptions1(mesSelecionado); // Chama a função para carregar os dias
         });
     }
 

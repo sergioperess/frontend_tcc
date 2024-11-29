@@ -3,16 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planejamento</title>
+    <title>MeuGestor - Planejamento</title>
     <link rel="stylesheet" href="planejamento.css">
 </head>
 <body>
 
     <header>
-        <h1>Página de Planejamento</h1>
-        <a href="gasto.html">Tipo de gasto</a>
-        <a href="totalGasto.html">Relatório de Gastos</a>
-        <a href="transaction.html">Transações</a>
+        <div class="gif-container">
+            <img src="calendario2.png" alt="GIF animado">
+        </div>
+        <div class="header-content">
+            <h1>Página de Planejamento</h1>
+            <a href="gasto.html">Tipo de gasto</a>
+            <a href="totalGasto.html">Relatório de Gastos</a>
+            <a href="transaction.html">Transações</a>
+            <a href="configuracao.html">Configurações</a>
+        </div>
     </header>
     <main>
         <section class="actions">
@@ -68,9 +74,15 @@
 
             <h2>Tabela de Itens</h2>
 
+            <div class="button-container">
+                <button id="selectAll">Selecionar Todos</button>
+                <button id="deselectAll">Remover Seleção</button>
+            </div>
+
             <table id="itemTable">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Tipo de Gasto</th>
                         <th>Data</th>
                         <th>Valor Planejado</th>
@@ -80,6 +92,28 @@
 
                 </tbody>
             </table>
+
+            <form id="updateForm">
+                <h2>Atualizar Item</h2>
+                <input type="text" class="valor" id="updateValor" placeholder="Valor">
+                <label for="updateTypeId">Tipo de Gasto:</label>
+                <select class="type" name="type" id="updateTypeId">
+                    <option value="" disabled selected>Selecione o tipo de gasto</option>
+                </select>
+                <label for="mes">Mês:</label>
+                <select class="mes" name="mes" id="mesUpdate">
+                     <option value="" disabled selected>Selecione o mês</option>
+                </select>
+                <label for="ano">Ano:</label>
+                <select class="ano" name="ano" id="anoUpdate">
+                </select>
+                <button type="submit">Atualizar</button>
+            </form>
+
+            <form id="deleteForm">
+                <h2>Deletar Item</h2>
+                <button type="submit" id="delete-item ">Deletar</button>
+            </form>
 
             <div id="logout">
                 <button type="button">Sair</button>

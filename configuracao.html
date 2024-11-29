@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeuGestor - Configuração</title>
+    <link rel="stylesheet" href="configuracao.css">
+</head>
+<body>
+
+    <header>
+        <div class="gif-container">
+            <img src="calendario2.png" alt="GIF animado">
+        </div>
+        <div class="header-content">
+            <h1>Configurações</h1>
+            <a href="gasto.html">Tipo de gasto</a>
+            <a href="totalGasto.html">Relatório de Gastos</a>
+            <a href="planejamento.html">Planejamento</a>
+            <a href="transaction.html">Transações</a>
+        </div>
+    </header>
+    <main>
+        <section class="item-management">
+
+            <h2>Atualização do Usuário</h2>
+
+            <form id="updateUserForm">
+                <div class="form-group">
+                    <label for="firstName">Primeiro Nome:</label>
+                    <input type="text" id="firstName" name="firstName" placeholder="Digite o primeiro nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Último Nome:</label>
+                    <input type="text" id="lastName" name="lastName" placeholder="Digite o último nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha Atual:</label>
+                    <input type="password" id="senhaAtual" name="senhaAtual" placeholder="Digite sua senha" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Nova Senha:</label>
+                    <input type="password" id="senha" name="senha" placeholder="Digite a nova senha" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmSenha">Confirmação da Senha:</label>
+                    <input type="password" id="confirmSenha" name="confirmSenha" placeholder="Confirme a sua senha" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" placeholder="Digite o e-mail" required>
+                </div>
+                <button type="submit" class="submit-btn">Atualizar</button>
+            </form>
+
+            <div id="logout">
+                <button type="submit">Sair</button>
+            </div>
+
+        </section>
+    </main>
+    <script src="configuracao.js"></script>
+</body>
+</html>

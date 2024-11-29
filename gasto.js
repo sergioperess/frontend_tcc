@@ -94,43 +94,43 @@ document.addEventListener("DOMContentLoaded", function() {
     // Função para renderizar itens na lista com base nos dados fornecidos
     function renderItems(items) {
         const tbody = document.querySelector("#itemTable tbody");
-    tbody.innerHTML = ""; // Limpa o corpo da tabela antes de atualizar
+        tbody.innerHTML = ""; // Limpa o corpo da tabela antes de atualizar
 
-    items.forEach(item => {
-        // Criação da linha da tabela <tr>
-        const row = document.createElement("tr");
+        items.forEach(item => {
+            // Criação da linha da tabela <tr>
+            const row = document.createElement("tr");
 
-        // Criação da célula com checkbox
-        const checkboxCell = document.createElement("td");
-        const checkbox = document.createElement("input");
-        checkbox.type = 'checkbox';
-        checkboxCell.appendChild(checkbox);
-        row.appendChild(checkboxCell);
+            // Criação da célula com checkbox
+            const checkboxCell = document.createElement("td");
+            const checkbox = document.createElement("input");
+            checkbox.type = 'checkbox';
+            checkboxCell.appendChild(checkbox);
+            row.appendChild(checkboxCell);
 
-        // Criação da célula de ID
-        const idCell = document.createElement("td");
-        idCell.textContent = item.id;
-        row.appendChild(idCell);
+            // Criação da célula de ID
+            const idCell = document.createElement("td");
+            idCell.textContent = item.id;
+            row.appendChild(idCell);
 
-        // Criação da célula de Nome
-        const nomeCell = document.createElement("td");
-        nomeCell.textContent = item.nome;
-        row.appendChild(nomeCell);
+            // Criação da célula de Nome
+            const nomeCell = document.createElement("td");
+            nomeCell.textContent = item.nome;
+            row.appendChild(nomeCell);
 
-        // Adiciona a linha ao corpo da tabela
-        tbody.appendChild(row);
+            // Adiciona a linha ao corpo da tabela
+            tbody.appendChild(row);
 
-        // Evento de mudança para o checkbox
-        checkbox.addEventListener('change', function () {
-            if (this.checked) {
-                addInArray(item.id);
-            } else {
-                removeInArray(item.id);
-            }
-            console.log(arrayId); // Exibe o array atualizado no console
-            toggleButtons();
+            // Evento de mudança para o checkbox
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    addInArray(item.id);
+                } else {
+                    removeInArray(item.id);
+                }
+                console.log(arrayId); // Exibe o array atualizado no console
+                toggleButtons();
+            });
         });
-    });
     }
 
     // Função para habilitar/desabilitar os botões de atualizar e deletar

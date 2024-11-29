@@ -14,6 +14,12 @@ document.getElementById("createForm").addEventListener("submit", function(e) {
         return; // Interrompe o envio caso algum campo esteja vazio
     }
 
+    // Verifica se a senha e a confirmação correspondem
+    if (senha.value !== confirmSenha.value) {
+        alert("As senhas não correspondem. Tente novamente.");
+        return; // Interrompe o envio caso as senhas sejam diferentes
+    }
+
     const data = { 
         firstName: firstName.value, 
         lastName: lastName.value,
