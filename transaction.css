@@ -31,11 +31,20 @@ header {
 .gif-container {
     margin-right: -8rem;
     margin-left: 3rem; /* Espaço entre a imagem e a borda esquerda */
+    text-align: center; /* Centraliza o texto em relação à imagem */
 }
 
 .gif-container img {
     width: 50px; /* Define a largura da imagem */
     height: auto; /* Mantém a proporção */
+}
+
+.brand-name {
+    font-size: 14px; /* Tamanho do texto */
+    font-weight: bold;
+    margin-top: 0.5rem; /* Espaço entre a imagem e o texto */
+    color: #333; /* Altere conforme necessário */
+    text-align: center; /* Centraliza o texto */
 }
 
 /* Contêiner do título e links */
