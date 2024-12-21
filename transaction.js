@@ -35,6 +35,10 @@ document.addEventListener("DOMContentLoaded", function() {
     // Array de todos os itens de gastos (fetched)
     let allItems = [];
 
+    var listaCompleta = [];
+    let somaPlanejamentoPorId = []; // Armazena o total por nome de gasto
+    let somas = [];
+
     // Função para criar um novo item
     document.getElementById("createForm").addEventListener("submit", function(e) {
         e.preventDefault();
@@ -113,6 +117,9 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Item criado:", data);
             carregarOpcoes();
             document.getElementById("filterMonth").value = "";
+
+            localStorage.setItem('tipoGasto', data.type);
+
             fetchItems();
         })
         .catch(error => console.error("Erro ao criar item:", error));
@@ -121,6 +128,56 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.style.display = "none";
     });
 
+    function showNotification(message, duration = 3000) {
+        const notification = document.getElementById("notification");
+        const header = document.querySelector("header");
+
+        // Ajustar a posição da notificação logo abaixo do header
+        const headerHeight = header.offsetHeight;
+        notification.style.top = `${headerHeight + 10}px`; // 10px abaixo do header
+
+        // Definir o texto e mostrar a notificação
+        notification.textContent = message;
+        notification.style.display = "block";
+
+        // Ocultar após o tempo especificado
+        setTimeout(() => {
+            notification.style.display = "none";
+        }, duration);
+    }
+
+    function calcularTotalPorTipo(tipoGasto, transacoes) {
+        return transacoes
+            .filter(transacao => transacao.type === tipoGasto)
+            .reduce((total, transacao) => total + parseFloat(transacao.valor), 0);
+    }
+
+    function verificarPlanejamento(tipoGasto, transacoes, planejamentos) {
+        const totalTransacoes = calcularTotalPorTipo(tipoGasto, transacoes);
+        // Verifica explicitamente se o tipo de gasto existe em planejamentos
+        const planejamento = planejamentos.hasOwnProperty(tipoGasto) ? planejamentos[tipoGasto] : 0;
+
+
+        console.log(tipoGasto)
+        console.log(transacoes)
+        console.log(planejamentos)
+        
+        console.log(planejamento);
+
+        // Retorna falso se o planejamento for zero
+        if (planejamento === 0) {
+            return false;
+        }
+        
+        return totalTransacoes > planejamento;
+    }
+    
+    function verificarEExibirMensagem(tipoGasto, transacoes, planejamentos) {
+        if (verificarPlanejamento(tipoGasto, transacoes, planejamentos)) {
+            showNotification(`Atenção: o total de transações para ${tipoGasto} ultrapassou o planejamento!`);
+        }
+    }
+    
 
     // Função para criar o cookie
     function criarCookie(nome, valor, diasExpiracao) {
@@ -163,6 +220,10 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             allItems = data; // Salva todos os itens no array allItems
+
+            listaGasto();
+
+            verificarEExibirMensagem(localStorage.getItem('tipoGasto'), allItems, somaPlanejamentoPorId)
             renderItems(allItems); // Renderiza todos os itens inicialmente
         })
         .catch(error => console.error("Erro ao carregar itens:", error));
@@ -798,6 +859,78 @@ document.addEventListener("DOMContentLoaded", function() {
             const mesSelecionado = parseInt(select.value); // Obtém o valor do mês selecionado
             loadDiaOptions1(mesSelecionado); // Chama a função para carregar os dias
         });
+    }
+
+
+    // Função para ler e listar todos os nomes de gastos
+    function listaGasto() {
+        
+        fetch(`http://localhost:8080/api/gastos/list/${localStorage.getItem('userId')}`, {
+            headers: {
+                'Authorization': `Bearer ${lerCookie('authToken')}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Armazena os nomes dos gastos
+            const nomesGastos = data.map(gasto => gasto.nome); 
+            const idsGastos = data.map(gasto => gasto.id); // Armazena os IDs dos gastos
+
+            listaPlanejamento(nomesGastos, idsGastos);   // Busca e lista os valores de planejamento por ID
+        })
+        .catch(error => console.error("Erro ao carregar itens:", error));
+    }
+
+    function listaPlanejamento(nomesGastos, idsGastos) {
+        nomesGastos.forEach(nome => {
+            somaPlanejamentoPorId[nome] = 0; // Define o total inicial como 0
+        });
+    
+        // Função auxiliar para fazer a requisição sequencialmente
+        const fetchSequentially = async (idsGastos) => {
+            for (const idGasto of idsGastos) {
+                try {
+                    const response = await fetch(`http://localhost:8080/api/planejamento/list/${idGasto}`, {
+                        headers: {
+                            'Authorization': `Bearer ${lerCookie('authToken')}`
+                        }
+                    });
+                    const data = await response.json();
+    
+                    // Verifica se a resposta contém dados
+                    if (Array.isArray(data)) {
+                        // Itera sobre os dados de planejamento e acumula os valores e detalhes
+                        data.forEach(planejamento => {
+                            const id = planejamento.id;
+                            const valor = planejamento.valorPlanejado || 0; // Usa 0 se valorPlanejado for undefined
+                            const nomeGasto = planejamento.type; // Mapeia o tipo do planejamento
+                            const mes = planejamento.mes;
+                            const ano = planejamento.ano;
+    
+                            // Verifica se o nome do gasto existe nos nomes obtidos anteriormente
+                            if (nomesGastos.includes(nomeGasto)) {
+                                somaPlanejamentoPorId[nomeGasto] += valor; // Acumula o valor de planejamento para o nome do gasto
+    
+                                // Salva o objeto completo de planejamento na lista
+                                listaCompleta.push({
+                                    id: id,
+                                    nome: nomeGasto,
+                                    valorPlanejado: valor,
+                                    mes: mes,
+                                    ano: ano
+                                });
+                            }
+                        });
+                    }
+                    somas = somaPlanejamentoPorId;
+                } catch (error) {
+                    console.error(`Erro ao carregar planejamento para o gasto ${idGasto}:`, error);
+                }
+            }
+        };
+    
+        // Chama a função auxiliar para iniciar as requisições
+        fetchSequentially(idsGastos);
     }
 
     // Carregar a lista de itens ao iniciar a página

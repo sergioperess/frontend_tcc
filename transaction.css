@@ -71,6 +71,32 @@ header a:hover {
     color: #ddd; /* Altera a cor ao passar o mouse */
 }
 
+#notification {
+    position: fixed; /* Fixa o elemento na janela */
+    right: 10px; /* Margem do lado direito */
+    top: 10px; /* Margem do topo */
+    background-color: white; /* Cor de fundo branca */
+    color: #333; /* Cor do texto ajustada para contraste */
+    border-radius: 5px; /* Bordas arredondadas */
+    padding: 8px 12px; /* Espaçamento interno ajustado */
+    display: none; /* Inicialmente escondido */
+    z-index: 1000; /* Aparece acima de outros elementos */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra leve */
+    font-size: 14px; /* Tamanho do texto */
+    max-width: 300px; /* Limita a largura para mensagens longas */
+    width: auto; /* Ajusta-se ao conteúdo */
+    word-wrap: break-word; /* Permite quebra de linha para texto longo */
+    text-align: left; /* Alinha o texto à esquerda */
+    border: 1px solid #ddd; /* Borda leve para destacar o contorno */
+}
+
+
+header + #notification {
+    top: calc(100% + 10px); /* Logo abaixo do header */
+}
+
+
+
 main {
     padding: 20px;
 }

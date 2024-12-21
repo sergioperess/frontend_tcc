@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="transaction.css">
 </head>
 <body>
-
     <header>
         <div class="gif-container">
             <img src="calendario2.png" alt="GIF animado">
@@ -21,6 +20,28 @@
             <a href="configuracao.html">Configurações</a>
         </div>
     </header>
+
+    <div id="notification" style="
+        position: absolute;
+        top: calc(100% + 10px); /* Ajusta para ficar logo abaixo do header */
+        right: 10px;
+        padding: 8px 12px; /* Espaçamento interno ajustado */
+        background-color: white; /* Fundo branco */
+        color: #333; /* Texto em cinza escuro para contraste */
+        border-radius: 5px;
+        font-size: 14px; /* Tamanho da fonte */
+        display: none;
+        z-index: 1000;
+        max-width: 300px; /* Limita a largura */
+        width: auto; /* Ajusta-se ao conteúdo */
+        text-align: left; /* Alinha o texto à esquerda */
+        word-wrap: break-word; /* Permite quebra de linha */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Adiciona sombra */
+        border: 1px solid #ddd; /* Adiciona uma borda leve */
+    "></div>
+
+
+    
     <main>
         <section class="actions">
             <button id="create-item">Criar Nova Transação</button>
@@ -135,6 +156,7 @@
 
         </section>
     </main>
+
     <script src="transaction.js"></script>
 </body>
 </html>
