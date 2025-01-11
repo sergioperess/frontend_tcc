@@ -6,10 +6,11 @@ document.getElementById("createForm").addEventListener("submit", function(e) {
     const lastName = document.querySelector(".lastName");
     const cpf = document.querySelector(".cpf");
     const senha = document.querySelector(".senha");
+    const confirmSenha = document.querySelector(".confirmSenha");
     const email = document.querySelector(".email");
 
     // Verifica se algum campo está vazio
-    if (!firstName.value.trim() || !lastName.value.trim() || !cpf.value.trim() || !senha.value.trim() || !email.value.trim()) {
+    if (!firstName.value.trim() || !lastName.value.trim() || !cpf.value.trim() || !confirmSenha.value.trim() || !senha.value.trim() || !email.value.trim()) {
         alert("Por favor, preencha todos os campos obrigatórios.");
         return; // Interrompe o envio caso algum campo esteja vazio
     }

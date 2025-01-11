@@ -120,6 +120,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
             localStorage.setItem('tipoGasto', data.type);
 
+            //showNotification("Transação salva com sucesso");
+
             fetchItems();
         })
         .catch(error => console.error("Erro ao criar item:", error));
